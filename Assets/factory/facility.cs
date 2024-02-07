@@ -13,14 +13,14 @@ public class Factory
 {
 	public string factoryName;
 	public int factoryLevel;
-	public float cookiesPerSecond;
+	public float MoneyPerSecond;
 	public float factoryManey;
 	
-	public Factory(string name, int level, float cookie, float NeedManey)
+	public Factory(string name, int level, float addmoney, float NeedManey)
 	{
 		factoryName = name;
 		factoryLevel = level;
-		cookiesPerSecond = cookie;
+		MoneyPerSecond = addmoney;
 		factoryManey = NeedManey;
 	}
 }
@@ -37,7 +37,7 @@ public class Facility : MonoBehaviour
 		foreach (var factory in wherefact)
 		{
 			++factory.factoryLevel;
-			factory.cookiesPerSecond *= 2;
+			factory.MoneyPerSecond *= 2;
 			factory.factoryManey *= 1.15f;
 		}//施設があった場合レベルと増えるクッキーの値を増やす
 
