@@ -13,10 +13,10 @@ public class Factory
 {
 	public string factoryName;
 	public int factoryLevel;
-	public float MoneyPerSecond;
+	public ulong MoneyPerSecond;
 	public float factoryManey;
-	
-	public Factory(string name, int level, float addmoney, float NeedManey)
+
+	public Factory(string name, ulong addmoney, float NeedManey, int level = 1)
 	{
 		factoryName = name;
 		factoryLevel = level;
@@ -27,11 +27,24 @@ public class Factory
 
 public class Facility : MonoBehaviour
 {
+	static private Facility _instance;
+	public static Facility Instance => _instance;
+	
 	[SerializeField] List<Factory> factories = new List<Factory>();
+	[SerializeField] private List<BaseFactoryData> _factoryDatas;
 	//テキストの設定を変更したい場合
 	[SerializeField] private TextMeshProUGUI _factoryText;
-	
-	void AddFactories(string name, float cookiesPerSecond, float needManey)
+
+	private void Awake()
+	{
+	}
+
+	private void Start()
+	{
+		StartCoroutine(AddCookieOpe());
+	}
+
+	public void AddFactories(string name, ulong cookiesPerSecond, float needManey)
 	{
 		var wherefact = factories.Where(x => x.factoryName == name);
 		foreach (var factory in wherefact)
@@ -39,32 +52,29 @@ public class Facility : MonoBehaviour
 			++factory.factoryLevel;
 			factory.MoneyPerSecond *= 2;
 			factory.factoryManey *= 1.15f;
-		}//施設があった場合レベルと増えるクッキーの値を増やす
+		} //施設があった場合レベルと増えるクッキーの値を増やす
 
-		if(wherefact.Count() <= 0)
+		if (wherefact.Count() <= 0)
 		{
-			factories.Add(new Factory(name, 1, cookiesPerSecond, needManey));
+			factories.Add(new Factory(name, cookiesPerSecond, needManey));
 			TextMeshProUGUI _text = Instantiate(new GameObject().AddComponent<TextMeshProUGUI>(), transform);
 			_text.text = name;
-		}//なかったらリストに追加してテキストを自分の子オブジェクトに出す
-	}
+		} //なかったらリストに追加してテキストを自分の子オブジェクトに出す
 
-	private void Start()
-	{
-		//AddFactories("aaa", 1f, 1);
-		StartCoroutine(AddCookieOpe());
+		//ここにリソースを減らす処理を書く
 	}
 
 	IEnumerator AddCookieOpe()
 	{
 		while (true)
 		{
+			float addCookie = 0;
 			foreach (var factory in factories)
 			{
-				//クッキーを増やす処理をここに書く
+				addCookie += factory.MoneyPerSecond;
 			}
-			yield return new WaitForSeconds(1f);
+			ResourceManager.Instance.AddResorce(1);
+			yield return new WaitForSeconds(1f / addCookie);
 		}
 	}
-
 }
