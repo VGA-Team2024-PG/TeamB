@@ -14,9 +14,9 @@ public class FactoryData
 {
 	[SerializeField] string factoryName;
 	[SerializeField] float moneyPerSecond;
-	[SerializeField] float prime;
+	[SerializeField] int prime;
 
 	public string FactoryName => factoryName;
 	public float MoneyPerSecond => moneyPerSecond;
-	public float Prime => prime;
+	public int Prime => prime;
 }
