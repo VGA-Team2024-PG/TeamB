@@ -2,7 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/CreateFactoryDataAsset")]
+/// <summary>
+/// 施設のスクリプタブルオブジェクト
+/// </summary>
+[CreateAssetMenu(fileName = "BaceFactoryData", menuName = "ScriptableObjects/CreateFactoryDataAsset")]
 public class BaseFactoryData : ScriptableObject
 {
 	[SerializeField] List<FactoryData> factoryDatas = new List<FactoryData>();

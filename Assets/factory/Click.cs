@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// クリックのクラス
+/// </summary>
 public class Click : MonoBehaviour, IPointerClickHandler
 {
 	private int addResource = 1;
