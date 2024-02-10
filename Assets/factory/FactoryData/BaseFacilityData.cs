@@ -8,12 +8,12 @@ using System;
 [CreateAssetMenu(fileName = "BaceFactoryData", menuName = "ScriptableObjects/CreateFactoryDataAsset")]
 public class BaseFactoryData : ScriptableObject
 {
-	[SerializeField] List<FactoryData> factoryDatas = new List<FactoryData>();
-	public List<FactoryData> FactoryDatas => factoryDatas;
+	[SerializeField] List<FacilityData> factoryDatas = new ();
+	public List<FacilityData> FactoryDatas => factoryDatas;
 }
 
 [Serializable]
-public class FactoryData
+public class FacilityData
 {
 	[SerializeField] string factoryName;
 	[SerializeField] float moneyPerSecond;

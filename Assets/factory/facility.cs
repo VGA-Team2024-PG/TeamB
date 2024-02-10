@@ -2,53 +2,72 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using factory;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 
 [Serializable]
-public class Factory
+public class CurrentFactoryData
 {
+	/// <summary>施設のレベル</summary>
 	public int factoryLevel;
-	public float resourcePerSecond;
+
+	/// <summary>リソースの増える量</summary>
+	public float resourceValue;
+
+	/// <summary>施設の価格</summary>
 	public float prime;
 
-	public Factory(float resourcePerSecond, float Prime, int level = 1)
+	/// <summary>初期化用</summary>
+	/// <param name="resourceValue"></param>
+	/// <param name="Prime"></param>
+	/// <param name="level"></param>
+	public CurrentFactoryData(float resourceValue, float Prime, int level = 1)
 	{
 		factoryLevel = level;
-		this.resourcePerSecond = resourcePerSecond;
+		this.resourceValue = resourceValue;
 		prime = Prime;
 	}
 }
 
-/// <summary>
-/// 施設のクラス
-/// </summary>
+/// <summary>施設のクラス</summary>
 public class Facility : MonoBehaviour
 {
-	static private Facility _instance;
-	public static Facility Instance => _instance;
-
+	private static Facility instance;
+	public static Facility Instance => instance;
 	//全施設のデータ
 	[SerializeField] private BaseFactoryData _factoryDatas;
-	[SerializeField] private TextMeshProUGUI[] _factoryTexts;
-	[SerializeField, Header("施設を買うボタン")] private TextMeshProUGUI[] _buttonTeext;
+	Dictionary<string, FactoryData> _factoryDatasDic = new ();
+	public Dictionary<string, FactoryData> FactoryDatasDic => _factoryDatasDic;
 
 	//買った施設
-	private Dictionary<string, Factory> buyedFactories = new Dictionary<string, Factory>();
+	private Dictionary<string, CurrentFactoryData> buyedFactories = new();
+	public Dictionary<string, CurrentFactoryData> BuyedFactories => buyedFactories;
 
-	private Action _action;
+	float resourcePerSeconds = 0.0f;
 
+	
 	private void Awake()
 	{
-		_action += ReflectText;
+		instance = this;
 	}
 
+	
 	private void Start()
 	{
-		StartCoroutine(AddCookieOpe());
+		ResourceManager.Instance.AddResorce(200);
+		_factoryDatas.FactoryDatas.ForEach(x => _factoryDatasDic.Add(x.FactoryName, x));
+	}
+
+	
+	private void Update()
+	{
+		AddCookieOpe();
 	}
 
 	/// <summary>
@@ -59,27 +78,22 @@ public class Facility : MonoBehaviour
 	{
 		if (buyedFactories == null || buyedFactories.ContainsKey(name) == false)
 		{
-			var factData = _factoryDatas.FactoryDatas.Where(x => x.FactoryName == name);
-			foreach (var factory in factData)
-			{
 				//リソースが足りなかったら買えない
-				if (ResourceManager.Instance.Resorce >= (ulong)factory.Prime)
+				if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(_factoryDatasDic[name].Prime))
 				{
-					buyedFactories.Add(name, new Factory(factory.MoneyPerSecond, factory.Prime));
-					ResourceManager.Instance.UseResorce(factory.Prime);
-					_action();
-					break;
+					ResourceManager.Instance.UseResorce(_factoryDatasDic[name].Prime);
+					buyedFactories.Add(name, new CurrentFactoryData(_factoryDatasDic[name].MoneyPerSecond, _factoryDatasDic[name].Prime));
+					buyedFactories.OrderBy(x => x.Value.prime);
+					buyedFactories[name].prime *= 1.15f;
+					UIManager.Instance.ReflectShop(name);
 				}
-
-			}
 		} //なかったらリストに追加してテキストを自分の子オブジェクトに出す
-		else if (ResourceManager.Instance.Resorce >= (ulong)buyedFactories[name].prime)
+		else if (ResourceManager.Instance.Resorce >= (ulong)Mathf.CeilToInt(buyedFactories[name].prime))
 		{
-				++buyedFactories[name].factoryLevel;
-				buyedFactories[name].resourcePerSecond *= buyedFactories[name].factoryLevel;
-				buyedFactories[name].prime *= 1.15f;
-				ResourceManager.Instance.UseResorce((int)buyedFactories[name].prime);
-				_action();
+			ResourceManager.Instance.UseResorce((int)Mathf.Ceil(buyedFactories[name].prime));
+			++buyedFactories[name].factoryLevel;
+			buyedFactories[name].prime *= 1.15f;
+			UIManager.Instance.ReflectShop(name);
 		} //施設があった場合施設レベルと増えるクッキーの値を増やす
 	}
 
@@ -89,35 +103,30 @@ public class Facility : MonoBehaviour
 	/// <param name="name"></param>
 	public void UpdateItem(string name)
 	{
-		if (ResourceManager.Instance.Resorce >= buyedFactories[name].prime)
+		if (buyedFactories.ContainsKey(name) && ResourceManager.Instance.Resorce >= buyedFactories[name].prime)
 		{
-			buyedFactories[name].resourcePerSecond *= 2;
-			ResourceManager.Instance.UseResorce((int)buyedFactories[name].prime);
+			ResourceManager.Instance.UseResorce((int)Mathf.Ceil(buyedFactories[name].prime));
+			buyedFactories[name].resourceValue *= 2;
 		}
 	}
 
-	void ReflectText()
-	{
-		int i = 0;
-		foreach (var buyedFactory in buyedFactories)
-		{
-			_factoryTexts[i].gameObject.SetActive(true);
-			_factoryTexts[i].text = $"{buyedFactory.Key} {buyedFactory.Value.factoryLevel}";
-			++i;
-		}
-	}
+	
 
-	IEnumerator AddCookieOpe()
+	void AddCookieOpe()
 	{
-		while (true)
+		float resourcePerSeconds = 0.0f;
+		foreach (var factory in buyedFactories.Values)
 		{
-			float addCookie = 0.0000001f;
-			foreach (var factory in buyedFactories.Values)
+			for (int i = 0; i < factory.factoryLevel; i++)
 			{
-				addCookie += factory.resourcePerSecond;
+				resourcePerSeconds += factory.resourceValue;
 			}
-			ResourceManager.Instance.AddResorce(1);
-			yield return new WaitForSeconds(1f / addCookie);
 		}
+		ResourceManager.Instance.AddResorce((int)(resourcePerSeconds * Time.deltaTime));
+	}
+
+	void ShopButtonColor()
+	{
+		
 	}
 }
