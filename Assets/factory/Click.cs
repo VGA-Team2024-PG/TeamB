@@ -1,64 +1,34 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Kawaguthi;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
+using DG.Tweening;
 
-[Serializable]
-public class CurrentItemData
-{
-	[SerializeField] private int addResource = 1;
-	[SerializeField] private int time;
-	[SerializeField] private int prime;
-
-	public int AddResource
-	{
-		get => addResource;
-		set => addResource = value;
-	}
-
-	///<summary>倍率</summary>
-	public int Time
-	{
-		get => time;
-		set => time = value;
-	}
-
-	///<summary>価格</summary>
-	public int Prime
-	{
-		get => prime;
-		set => prime = value;
-	}
-
-	///<summary>初期化用</summary>
-	public CurrentItemData( int Prime, int Time = 2)
-	{
-		time = Time;
-		prime = Prime;
-	}
-}
 
 /// <summary>クリックのクラス</summary>
-public class Click : MonoBehaviour, IPointerClickHandler
+public class Click : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
-	private Dictionary<string, CurrentItemData> _itemDic = new();
-	
+	[SerializeField] private Ease _pointUpEase;
+	[SerializeField] private Ease _clickEase;
+	private int _clickAddResource = 1;
+
+	private Vector3 _transform;
+
 	private void Start()
 	{
-		_itemDic.Add("クリック", new CurrentItemData(100));
+		_transform = transform.localScale;
 	}
 
-	/// <summary>クリックで増えるリソースを２倍にする</summary>
-	public void TwiceClickRecourcee(string name)
+	public int ClickTwoTime(string name)
 	{
-		if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(_itemDic[name].Prime))
-		{
-			_itemDic[name].AddResource *= _itemDic[name].Time;
-			ResourceManager.Instance.UseResorce(_itemDic[name].Prime);
-			Facility.Instance.UpdateItem(name);
-		}
+		_clickAddResource *= ItemManager.Instance.ItemDatas[name].Time;
+		return _clickAddResource;
+	}
+
+	public void OnPointerDown(PointerEventData eventData)
+	{
+		transform.DOScale(_transform, 0.15f).SetEase(_clickEase);
 	}
 
 	/// <summary>
@@ -66,8 +36,19 @@ public class Click : MonoBehaviour, IPointerClickHandler
 	/// </summary>
 	/// <param name="eventData"></param>
 	/// <returns></returns>
-	public void OnPointerClick(PointerEventData eventData)
+	public void OnPointerUp(PointerEventData eventData)
 	{
-		ResourceManager.Instance.AddResorce(_itemDic["クリック"].AddResource);
+		ResourceManager.Instance.AddResorce(_clickAddResource);
+		transform.DOScale(_transform * 1.2f, 0.15f).SetEase(_clickEase);
+	}
+
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		transform.DOScale(_transform * 1.2f, 0.5f).SetEase(_pointUpEase);
+	}
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		transform.DOScale(_transform , 0.5f).SetEase(_pointUpEase);
 	}
 }
