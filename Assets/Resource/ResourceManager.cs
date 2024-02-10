@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 /// <summary>
 /// リソースを管理する
@@ -15,6 +16,8 @@ public class ResourceManager : MonoBehaviour
 
     ulong _resorce = 0ul;
     float _fraction = 0;
+    /// <summary>テキスト反映用リソース量</summary>
+    ulong _textResorce = 0;
 
     public ulong Resorce
     {
@@ -52,7 +55,12 @@ public class ResourceManager : MonoBehaviour
     /// <param name="value"></param>
     void ReflectText(ulong value)
     {
-        _resorceText.text = Resorce.ToString();
+        DOTween.To(() => _textResorce,
+            x => _textResorce = x,
+            _resorce,
+            0.5f)
+            .SetEase(Ease.Unset)
+            .OnUpdate(() => _resorceText.text = _textResorce.ToString());
     }
 
     private void Awake()
