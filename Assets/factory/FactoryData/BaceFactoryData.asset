@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9c32a8018f9f804a90f051b4d09b698, type: 3}
   m_Name: BaceFactoryData
   m_EditorClassIdentifier: 
-  factoryDatas:
-  - factoryName: "\u30AB\u30FC\u30BD\u30EB"
+  facilityDatas:
+  - facilityName: "\u30AB\u30FC\u30BD\u30EB"
     moneyPerSecond: 0.1
     prime: 10
-  - factoryName: "\u30B0\u30E9\u30F3\u30DE"
+  - facilityName: "\u30B0\u30E9\u30F3\u30DE"
     moneyPerSecond: 1
     prime: 100

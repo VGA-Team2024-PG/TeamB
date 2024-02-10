@@ -12,10 +12,10 @@ using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 
 [Serializable]
-public class CurrentFactoryData
+public class CurrentFacilityData
 {
 	/// <summary>施設のレベル</summary>
-	public int factoryLevel;
+	public int facilityLevel;
 
 	/// <summary>リソースの増える量</summary>
 	public float resourceValue;
@@ -27,9 +27,9 @@ public class CurrentFactoryData
 	/// <param name="resourceValue"></param>
 	/// <param name="Prime"></param>
 	/// <param name="level"></param>
-	public CurrentFactoryData(float resourceValue, float Prime, int level = 1)
+	public CurrentFacilityData(float resourceValue, float Prime, int level = 1)
 	{
-		factoryLevel = level;
+		facilityLevel = level;
 		this.resourceValue = resourceValue;
 		prime = Prime;
 	}
@@ -38,61 +38,61 @@ public class CurrentFactoryData
 /// <summary>施設のクラス</summary>
 public class Facility : MonoBehaviour
 {
-	private static Facility instance;
-	public static Facility Instance => instance;
+	private static Facility _instance;
+	public static Facility Instance => _instance;
 	//全施設のデータ
-	[SerializeField] private BaseFactoryData _factoryDatas;
-	Dictionary<string, FactoryData> _factoryDatasDic = new ();
-	public Dictionary<string, FactoryData> FactoryDatasDic => _factoryDatasDic;
+	[SerializeField] private BaseFacilityData facilityDatas;
+	Dictionary<string, FacilityData> _facilityDatasDic = new ();
+	public Dictionary<string, FacilityData> FacilityDatasDic => _facilityDatasDic;
 
 	//買った施設
-	private Dictionary<string, CurrentFactoryData> buyedFactories = new();
-	public Dictionary<string, CurrentFactoryData> BuyedFactories => buyedFactories;
+	private Dictionary<string, CurrentFacilityData> buyedFacilities = new();
+	public Dictionary<string, CurrentFacilityData> BuyedFacilities => buyedFacilities;
 
 	float resourcePerSeconds = 0.0f;
 
 	
 	private void Awake()
 	{
-		instance = this;
+		_instance = this;
 	}
 
 	
 	private void Start()
 	{
 		ResourceManager.Instance.AddResorce(200);
-		_factoryDatas.FactoryDatas.ForEach(x => _factoryDatasDic.Add(x.FactoryName, x));
+		facilityDatas.FacilityDatas.ForEach(x => _facilityDatasDic.Add(x.FacilityName, x));
 	}
 
 	
 	private void Update()
 	{
-		AddCookieOpe();
+		AddResourceOpe();
 	}
 
 	/// <summary>
 	/// 施設を追加する。あったらレベルを上げる（ボタンで呼び出す用）
 	/// </summary>
 	/// <param name="name"></param>
-	public void AddFactories(string name)
+	public void AddFacilities(string name)
 	{
-		if (buyedFactories == null || buyedFactories.ContainsKey(name) == false)
+		if (buyedFacilities == null || buyedFacilities.ContainsKey(name) == false)
 		{
 				//リソースが足りなかったら買えない
-				if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(_factoryDatasDic[name].Prime))
+				if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(_facilityDatasDic[name].Prime))
 				{
-					ResourceManager.Instance.UseResorce(_factoryDatasDic[name].Prime);
-					buyedFactories.Add(name, new CurrentFactoryData(_factoryDatasDic[name].MoneyPerSecond, _factoryDatasDic[name].Prime));
-					buyedFactories.OrderBy(x => x.Value.prime);
-					buyedFactories[name].prime *= 1.15f;
+					ResourceManager.Instance.UseResorce(_facilityDatasDic[name].Prime);
+					buyedFacilities.Add(name, new CurrentFacilityData(_facilityDatasDic[name].MoneyPerSecond, _facilityDatasDic[name].Prime));
+					buyedFacilities.OrderBy(x => x.Value.prime);
+					buyedFacilities[name].prime *= 1.15f;
 					UIManager.Instance.ReflectShop(name);
 				}
 		} //なかったらリストに追加してテキストを自分の子オブジェクトに出す
-		else if (ResourceManager.Instance.Resorce >= (ulong)Mathf.CeilToInt(buyedFactories[name].prime))
+		else if (ResourceManager.Instance.Resorce >= (ulong)Mathf.CeilToInt(buyedFacilities[name].prime))
 		{
-			ResourceManager.Instance.UseResorce((int)Mathf.Ceil(buyedFactories[name].prime));
-			++buyedFactories[name].factoryLevel;
-			buyedFactories[name].prime *= 1.15f;
+			ResourceManager.Instance.UseResorce((int)Mathf.Ceil(buyedFacilities[name].prime));
+			++buyedFacilities[name].facilityLevel;
+			buyedFacilities[name].prime *= 1.15f;
 			UIManager.Instance.ReflectShop(name);
 		} //施設があった場合施設レベルと増えるクッキーの値を増やす
 	}
@@ -103,30 +103,25 @@ public class Facility : MonoBehaviour
 	/// <param name="name"></param>
 	public void UpdateItem(string name)
 	{
-		if (buyedFactories.ContainsKey(name) && ResourceManager.Instance.Resorce >= buyedFactories[name].prime)
+		if (buyedFacilities.ContainsKey(name) && ResourceManager.Instance.Resorce >= buyedFacilities[name].prime)
 		{
-			ResourceManager.Instance.UseResorce((int)Mathf.Ceil(buyedFactories[name].prime));
-			buyedFactories[name].resourceValue *= 2;
+			ResourceManager.Instance.UseResorce((int)Mathf.Ceil(buyedFacilities[name].prime));
+			buyedFacilities[name].resourceValue *= 2;
 		}
 	}
 
-	
 
-	void AddCookieOpe()
+	///<summary>１フレームごとのリソース量</summary>
+	void AddResourceOpe()
 	{
 		float resourcePerSeconds = 0.0f;
-		foreach (var factory in buyedFactories.Values)
+		foreach (var factory in buyedFacilities.Values)
 		{
-			for (int i = 0; i < factory.factoryLevel; i++)
+			for (int i = 0; i < factory.facilityLevel; i++)
 			{
 				resourcePerSeconds += factory.resourceValue;
 			}
 		}
 		ResourceManager.Instance.AddResorce((int)(resourcePerSeconds * Time.deltaTime));
-	}
-
-	void ShopButtonColor()
-	{
-		
 	}
 }

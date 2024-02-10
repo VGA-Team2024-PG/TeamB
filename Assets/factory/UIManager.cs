@@ -16,7 +16,7 @@ namespace factory
 		[SerializeField] private TextMeshProUGUI[] _factoryTexts;
 		[SerializeField, Header("施設を買うボタン")] private Button[] _facilityButton;
 		[SerializeField, Header("アイテムを買うボタン")] private Button[] _itemButton;
-		[SerializeField] private BaseFactoryData _baseFactoryData;
+		[SerializeField] private BaseFacilityData baseFacilityData;
 
 
 		private void Awake()
@@ -38,11 +38,11 @@ namespace factory
 		void ReflectStartText()
 		{
 			int i = 0;
-			foreach (var factory in _baseFactoryData.FactoryDatas)
+			foreach (var factory in baseFacilityData.FacilityDatas)
 			{
 				_facilityButton[i].GetComponentInChildren<TextMeshProUGUI>().text =
-					$"{factory.FactoryName} {factory.Prime}";
-				_factoryTexts[i].text = $"{factory.FactoryName}";
+					$"{factory.FacilityName} {factory.Prime}";
+				_factoryTexts[i].text = $"{factory.FacilityName}";
 				i++;
 			}
 		}
@@ -53,13 +53,13 @@ namespace factory
 			foreach (var text in _factoryTexts.Where(x => x.text.Contains(name)))
 			{
 				text.gameObject.SetActive(true);
-				text.text = $"{name} {Facility.Instance.BuyedFactories[name].factoryLevel}";
+				text.text = $"{name} {Facility.Instance.BuyedFacilities[name].facilityLevel}";
 #if UNITY_EDITOR
-				Debug.Log($"{name}施設レベル{Facility.Instance.BuyedFactories[name].factoryLevel}");
+				Debug.Log($"{name}施設レベル{Facility.Instance.BuyedFacilities[name].facilityLevel}");
 				Debug.Log($"{name}合計生産量" +
-				          Facility.Instance.BuyedFactories[name].resourceValue *
-				          Facility.Instance.BuyedFactories[name].factoryLevel);
-				Debug.Log($"{name} 価格{Facility.Instance.BuyedFactories[name].prime}");
+				          Facility.Instance.BuyedFacilities[name].resourceValue *
+				          Facility.Instance.BuyedFacilities[name].facilityLevel);
+				Debug.Log($"{name} 価格{Facility.Instance.BuyedFacilities[name].prime}");
 #endif
 			}
 
@@ -67,37 +67,29 @@ namespace factory
 				         x.GetComponentInChildren<TextMeshProUGUI>().text.Contains(name)))
 			{
 				button.GetComponentInChildren<TextMeshProUGUI>().text =
-					$"{name} {Mathf.Ceil(Facility.Instance.BuyedFactories[name].prime)}";
+					$"{name} {Mathf.Ceil(Facility.Instance.BuyedFacilities[name].prime)}";
 			}
 		}
 
 		///<summary>ボタンが押せるかどうか</summary>
 		void PossibleButton()
 		{
-			for (int i = 0; i < _baseFactoryData.FactoryDatas.Count; i++)
+			for (int i = 0; i < baseFacilityData.FacilityDatas.Count; i++)
 			{
-				if (!Facility.Instance.BuyedFactories.Keys.Contains(_baseFactoryData.FactoryDatas[i].FactoryName))
+				if (!Facility.Instance.BuyedFacilities.Keys.Contains(baseFacilityData.FacilityDatas[i].FacilityName))
 				{
-					if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(_baseFactoryData.FactoryDatas[i].Prime))
-					{
+					if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(baseFacilityData.FacilityDatas[i].Prime))
 						_facilityButton[i].interactable = true;
-					}
 					else
-					{
 						_facilityButton[i].interactable = false;
-					}
 				}
 				else
 				{
 					if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(Facility.Instance
-						    .BuyedFactories[_baseFactoryData.FactoryDatas[i].FactoryName].prime))
-					{
+						    .BuyedFacilities[baseFacilityData.FacilityDatas[i].FacilityName].prime))
 						_facilityButton[i].interactable = true;
-					}
 					else
-					{
 						_facilityButton[i].interactable = false;
-					}
 				}
 			}
 		}
