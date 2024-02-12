@@ -35,6 +35,7 @@ public class CurrentFacilityData
 	}
 }
 
+[RequireComponent(typeof(UIManager))]
 /// <summary>施設のクラス</summary>
 public class Facility : MonoBehaviour
 {
