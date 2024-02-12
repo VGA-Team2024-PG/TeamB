@@ -16,7 +16,7 @@ public class BaseFacilityData : ScriptableObject
 [Serializable]
 public class FacilityData
 {
-	[FormerlySerializedAs("factoryName")] [SerializeField] string facilityName;
+	[SerializeField] string facilityName;
 	[SerializeField] float moneyPerSecond;
 	[SerializeField] int prime;
 

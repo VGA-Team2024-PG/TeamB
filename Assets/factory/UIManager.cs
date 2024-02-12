@@ -32,12 +32,8 @@ namespace factory
 		private void Start()
 		{
 			_click = FindObjectOfType<Click>();
+			ResourceManager.Instance.OnResorceChanged += PossibleButton;
 			ReflectStartText();
-		}
-
-		private void Update()
-		{
-			PossibleButton();
 		}
 
 		///<summary>テキストの初期化</summary>
@@ -80,20 +76,20 @@ namespace factory
 		}
 
 		///<summary>ボタンが押せるかどうか</summary>
-		void PossibleButton()
+		void PossibleButton(long value)
 		{
 			for (int i = 0; i < baseFacilityData.FacilityDatas.Count; i++)
 			{
 				if (!Facility.Instance.BuyedFacilities.Keys.Contains(baseFacilityData.FacilityDatas[i].FacilityName))
 				{
-					if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(baseFacilityData.FacilityDatas[i].Prime))
+					if (ResourceManager.Instance.Resorce >= (long)Mathf.Ceil(baseFacilityData.FacilityDatas[i].Prime))
 						_facilityButton[i].interactable = true;
 					else
 						_facilityButton[i].interactable = false;
 				}
 				else
 				{
-					if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(Facility.Instance
+					if (ResourceManager.Instance.Resorce >= (long)Mathf.Ceil(Facility.Instance
 						    .BuyedFacilities[baseFacilityData.FacilityDatas[i].FacilityName].prime))
 						_facilityButton[i].interactable = true;
 					else
@@ -104,7 +100,7 @@ namespace factory
 			int j = 0;
 			foreach (var ItemValue in ItemManager.Instance.ItemDatas.Values)
 			{
-				if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(ItemValue.Prime))
+				if (ResourceManager.Instance.Resorce >= (long)Mathf.Ceil(ItemValue.Prime))
 					_itemButton[j].interactable = true;
 				else
 					_itemButton[j].interactable = false;
