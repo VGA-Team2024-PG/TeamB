@@ -9,9 +9,11 @@ using DG.Tweening;
 public class ResourceManager : MonoBehaviour
 {
     [SerializeField] TMP_Text _resorceText;
+    [SerializeField] Ease _countEase;
 
     static ResourceManager _instance;
     public static ResourceManager Instance { get => _instance; }
+    /// <summary>ƒŠƒ\[ƒX—Ê‚ª•Ï‰»‚µ‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚é</summary>
     public Action<long> OnResorceChanged;
 
     long _resorce = 0l;
@@ -64,10 +66,9 @@ public class ResourceManager : MonoBehaviour
         DOTween.To(() => _textResorce,
             x => _textResorce = x,
             (long)_resorce,
-            0.5f)
-            .SetEase(Ease.Linear)
+            0.2f)
+            .SetEase(_countEase)
             .OnUpdate(() => _resorceText.text = _textResorce.ToString());
-        Debug.Log(_resorce);
     }
 
     private void Awake()
