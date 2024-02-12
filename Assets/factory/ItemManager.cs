@@ -57,14 +57,14 @@ namespace Kawaguthi
 		{
 			foreach (var item in _itemDic.Where(x => name.Contains(x.Key.Split()[1])))
 			{
-				if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(_itemDic[name].Prime))
+				if (ResourceManager.Instance.Resorce >= (long)Mathf.Ceil(_itemDic[name].Prime))
 				{
 					_click.ClickTwoTime(name);
 				}
 			}//クリックのリソース量を増やす
 			foreach (var item in _itemDic.Where(x => name.Contains(x.Key.Split()[0])))
 			{
-				if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(_itemDic[name].Prime))
+				if (ResourceManager.Instance.Resorce >= (long)Mathf.Ceil(_itemDic[name].Prime))
 				{
 					ResourceManager.Instance.UseResorce(_itemDic[name].Prime);
 					Facility.Instance.UpdateItem(name);

@@ -55,7 +55,8 @@ public class Facility : MonoBehaviour
 	
 	private void Awake()
 	{
-		_instance = this;
+		if (_instance) Destroy(gameObject);
+		else _instance = this;
 	}
 
 	
@@ -71,25 +72,19 @@ public class Facility : MonoBehaviour
 		AddResourceOpe();
 	}
 
-	/// <summary>
-	/// 施設を追加する。あったらレベルを上げる（ボタンで呼び出す用）
-	/// </summary>
+	/// <summary>施設を追加する。あったらレベルを上げる（ボタンで呼び出す用）</summary>
 	/// <param name="name"></param>
 	public void AddFacilities(string name)
 	{
 		if (buyedFacilities == null || buyedFacilities.ContainsKey(name) == false)
 		{
-				//リソースが足りなかったら買えない
-				if (ResourceManager.Instance.Resorce >= (ulong)Mathf.Ceil(_facilityDatasDic[name].Prime))
-				{
 					ResourceManager.Instance.UseResorce(_facilityDatasDic[name].Prime);
 					buyedFacilities.Add(name, new CurrentFacilityData(_facilityDatasDic[name].MoneyPerSecond, _facilityDatasDic[name].Prime));
 					buyedFacilities.OrderBy(x => x.Value.prime);
 					buyedFacilities[name].prime *= 1.15f;
 					UIManager.Instance.ReflectShop(name);
-				}
 		} //なかったらリストに追加してテキストを自分の子オブジェクトに出す
-		else if (ResourceManager.Instance.Resorce >= (ulong)Mathf.CeilToInt(buyedFacilities[name].prime))
+		else
 		{
 			ResourceManager.Instance.UseResorce((int)Mathf.Ceil(buyedFacilities[name].prime));
 			++buyedFacilities[name].facilityLevel;
@@ -98,13 +93,11 @@ public class Facility : MonoBehaviour
 		} //施設があった場合施設レベルと増えるクッキーの値を増やす
 	}
 
-	/// <summary>
-	/// アップデートアイテム（ボタンで呼び出す用）
-	/// </summary>
+	/// <summary>アップデートアイテム（ボタンで呼び出す用）</summary>
 	/// <param name="name"></param>
 	public void UpdateItem(string name)
 	{
-		if (buyedFacilities.ContainsKey(name) && ResourceManager.Instance.Resorce >= buyedFacilities[name].prime)
+		if (buyedFacilities.ContainsKey(name))
 		{
 			ResourceManager.Instance.UseResorce((int)Mathf.Ceil(buyedFacilities[name].prime));
 			buyedFacilities[name].resourceValue *= 2;
@@ -123,6 +116,7 @@ public class Facility : MonoBehaviour
 				resourcePerSeconds += factory.resourceValue;
 			}
 		}
-		ResourceManager.Instance.AddResorce((int)(resourcePerSeconds * Time.deltaTime));
+		ResourceManager.Instance.AddResorce(resourcePerSeconds * Time.deltaTime);
+
 	}
 }
