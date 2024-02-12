@@ -83,17 +83,4 @@ public class ResourceManager : MonoBehaviour
         // 初期値をテキストに反映
         OnResorceChanged.Invoke(Resorce);
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            AddResorce(10);
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            UseResorce(10);
-        }
-    }
 }
