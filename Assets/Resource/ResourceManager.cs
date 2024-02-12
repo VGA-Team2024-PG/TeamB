@@ -9,22 +9,30 @@ using DG.Tweening;
 public class ResourceManager : MonoBehaviour
 {
     [SerializeField] TMP_Text _resorceText;
+    [SerializeField] Ease _countEase;
 
     static ResourceManager _instance;
     public static ResourceManager Instance { get => _instance; }
-    public Action<ulong> OnResorceChanged;
+    /// <summary>リソース量が変化したときに呼ばれる</summary>
+    public Action<long> OnResorceChanged;
 
-    ulong _resorce = 0ul;
+    long _resorce = 0l;
     float _fraction = 0;
     /// <summary>テキスト反映用リソース量</summary>
-    ulong _textResorce = 0;
+    long _textResorce = 0;
 
-    public ulong Resorce
+    public long Resorce
     {
         get => _resorce;
         private set
         {
             _resorce = value;
+
+            if (_resorce < 0)
+            {
+                _resorce = 0;
+            }
+
             OnResorceChanged.Invoke(_resorce);
         }
     }
@@ -36,7 +44,7 @@ public class ResourceManager : MonoBehaviour
     public void AddResorce(float value)
     {
         _fraction += value;
-        Resorce += (ulong)(_fraction / 1f);
+        Resorce += (long)(_fraction / 1f);
         _fraction %= 1f;
     }
 
@@ -46,20 +54,20 @@ public class ResourceManager : MonoBehaviour
     /// <param name="value"></param>
     public void UseResorce(int value)
     {
-        Resorce -= (ulong)value;
+        Resorce -= (long)value;
     }
 
     /// <summary>
     /// 現在のリソース量をテキストに反映する
     /// </summary>
     /// <param name="value"></param>
-    void ReflectText(ulong value)
+    void ReflectText(long value)
     {
         DOTween.To(() => _textResorce,
             x => _textResorce = x,
-            _resorce,
-            0.5f)
-            .SetEase(Ease.Unset)
+            (long)_resorce,
+            0.2f)
+            .SetEase(_countEase)
             .OnUpdate(() => _resorceText.text = _textResorce.ToString());
     }
 
