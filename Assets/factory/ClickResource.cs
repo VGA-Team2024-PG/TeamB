@@ -7,7 +7,7 @@ using DG.Tweening;
 
 
 /// <summary>クリックのクラス</summary>
-public class Click : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class ClickResource : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
 	[SerializeField] private Ease _pointUpEase;
 	[SerializeField] private Ease _clickEase;
@@ -20,7 +20,7 @@ public class Click : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 		_transform = transform.localScale;
 	}
 
-	public int ClickTwoTime(string name)
+	public int ClickMultiplier(string name)
 	{
 		_clickAddResource *= ItemManager.Instance.ItemDatas[name].Time;
 		return _clickAddResource;
@@ -31,9 +31,7 @@ public class Click : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 		transform.DOScale(_transform, 0.15f).SetEase(_clickEase);
 	}
 
-	/// <summary>
-	/// クリックされたときにリソースを増やす
-	/// </summary>
+	/// <summary>クリックされたときにリソースを増やす</summary>
 	/// <param name="eventData"></param>
 	/// <returns></returns>
 	public void OnPointerUp(PointerEventData eventData)
@@ -42,6 +40,7 @@ public class Click : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 		transform.DOScale(_transform * 1.2f, 0.15f).SetEase(_clickEase);
 	}
 
+	///<summary>リソースにカーソルを合わせた時</summary>
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		transform.DOScale(_transform * 1.2f, 0.5f).SetEase(_pointUpEase);

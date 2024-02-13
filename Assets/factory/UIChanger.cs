@@ -11,17 +11,17 @@ namespace factory
 {
 	[RequireComponent(typeof(ItemManager))]
 	[RequireComponent(typeof(Facility))]
-	public class UIManager : MonoBehaviour
+	public class UIChanger : MonoBehaviour
 	{
-		private static UIManager instance;
-		public static UIManager Instance => instance;
+		private static UIChanger instance;
+		public static UIChanger Instance => instance;
 
 		[SerializeField] private TextMeshProUGUI[] _factoryTexts;
 		[SerializeField, Header("施設を買うボタン")] private Button[] _facilityButton;
 		[SerializeField, Header("アイテムを買うボタン")] private Button[] _itemButton;
 		[SerializeField] private BaseFacilityData baseFacilityData;
 
-		private Click _click;
+		private ClickResource _clickResource;
 
 
 		private void Awake()
@@ -31,7 +31,7 @@ namespace factory
 
 		private void Start()
 		{
-			_click = FindObjectOfType<Click>();
+			_clickResource = FindObjectOfType<ClickResource>();
 			ResourceManager.Instance.OnResorceChanged += PossibleButton;
 			ReflectStartText();
 		}
