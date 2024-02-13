@@ -44,7 +44,6 @@ public class Facility : MonoBehaviour
 	//全施設のデータ
 	[SerializeField] private BaseFacilityData facilityDatas;
 	Dictionary<string, FacilityData> _facilityDatasDic = new ();
-	public Dictionary<string, FacilityData> FacilityDatasDic => _facilityDatasDic;
 
 	//買った施設
 	private Dictionary<string, CurrentFacilityData> buyedFacilities = new();

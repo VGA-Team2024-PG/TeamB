@@ -33,7 +33,7 @@ namespace Kawaguthi
 		}
 	}
 	
-	///<summary>アイテムｎ</summary>
+	///<summary>アイテムを管理するクラス</summary>
 	public class ItemManager : MonoBehaviour
 	{
 		private static ItemManager instance;
@@ -53,7 +53,7 @@ namespace Kawaguthi
 		}
 		
 		/// <summary>クリックで増えるリソースを２倍にする</summary>
-		public void TwiceClickRecourcee(string name)
+		public void multiplClickRecourcee(string name)
 		{
 			foreach (var item in _itemDic.Where(x => name.Contains(x.Key.Split()[1])))
 			{

@@ -48,6 +48,7 @@ namespace factory
 				i++;
 			}
 
+			//アイテムのテキストの切り替え（さぼってしまった）
 			_itemButton[0].GetComponentInChildren<TextMeshProUGUI>().text = "クリック " + 100;
 		}
 
