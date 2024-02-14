@@ -33,14 +33,14 @@ namespace Kawaguthi
 		}
 	}
 	
-	///<summary>アイテムｎ</summary>
+	///<summary>アイテムを管理するクラス</summary>
 	public class ItemManager : MonoBehaviour
 	{
 		private static ItemManager instance;
 		public static ItemManager Instance => instance;
 		Dictionary<string, CurrentItemData> _itemDic = new();
 		public Dictionary<string, CurrentItemData> ItemDatas => _itemDic;
-		private Click _click;
+		private ClickResource _click;
 		private void Awake()
 		{
 			instance = this;
@@ -48,18 +48,18 @@ namespace Kawaguthi
 
 		private void Start()
 		{
-			_click = FindObjectOfType<Click>();
+			_click = FindObjectOfType<ClickResource>();
 			_itemDic.Add("カーソル　クリック", new CurrentItemData());
 		}
 		
 		/// <summary>クリックで増えるリソースを２倍にする</summary>
-		public void TwiceClickRecourcee(string name)
+		public void multiplClickRecourcee(string name)
 		{
 			foreach (var item in _itemDic.Where(x => name.Contains(x.Key.Split()[1])))
 			{
 				if (ResourceManager.Instance.Resorce >= (long)Mathf.Ceil(_itemDic[name].Prime))
 				{
-					_click.ClickTwoTime(name);
+					_click.ClickMultiplier(name);
 				}
 			}//クリックのリソース量を増やす
 			foreach (var item in _itemDic.Where(x => name.Contains(x.Key.Split()[0])))

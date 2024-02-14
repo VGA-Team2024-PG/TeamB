@@ -958,7 +958,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3851475271801544364}
         m_TargetAssemblyTypeName: Kawaguthi.ItemManager, Assembly-CSharp
-        m_MethodName: TwiceClickRecourcee
+        m_MethodName: MultiplierClickRecourcee
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -35,7 +35,7 @@ public class CurrentFacilityData
 	}
 }
 
-[RequireComponent(typeof(UIManager))]
+[RequireComponent(typeof(UIChanger))]
 /// <summary>施設のクラス</summary>
 public class Facility : MonoBehaviour
 {
@@ -44,7 +44,6 @@ public class Facility : MonoBehaviour
 	//全施設のデータ
 	[SerializeField] private BaseFacilityData facilityDatas;
 	Dictionary<string, FacilityData> _facilityDatasDic = new ();
-	public Dictionary<string, FacilityData> FacilityDatasDic => _facilityDatasDic;
 
 	//買った施設
 	private Dictionary<string, CurrentFacilityData> buyedFacilities = new();
@@ -82,14 +81,14 @@ public class Facility : MonoBehaviour
 					buyedFacilities.Add(name, new CurrentFacilityData(_facilityDatasDic[name].MoneyPerSecond, _facilityDatasDic[name].Prime));
 					buyedFacilities.OrderBy(x => x.Value.prime);
 					buyedFacilities[name].prime *= 1.15f;
-					UIManager.Instance.ReflectShop(name);
+					UIChanger.Instance.ReflectShop(name);
 		} //なかったらリストに追加してテキストを自分の子オブジェクトに出す
 		else
 		{
 			ResourceManager.Instance.UseResorce((int)Mathf.Ceil(buyedFacilities[name].prime));
 			++buyedFacilities[name].facilityLevel;
 			buyedFacilities[name].prime *= 1.15f;
-			UIManager.Instance.ReflectShop(name);
+			UIChanger.Instance.ReflectShop(name);
 		} //施設があった場合施設レベルと増えるクッキーの値を増やす
 	}
 
