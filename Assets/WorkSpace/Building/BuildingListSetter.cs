@@ -4,7 +4,7 @@ using UnityEngine.UI;
 /// <summary>
 /// <para>施設リストの表示を更新する</para>
 /// </summary>
-public class FacilityListSetter : MonoBehaviour
+public class BuildingListSetter : MonoBehaviour
 {
 
     /// <summary>
@@ -15,18 +15,15 @@ public class FacilityListSetter : MonoBehaviour
     /// 表示するボタンのプレハブ
     /// </summary>
     [SerializeField] GameObject _buttonPrefab;
-    FacilityManager _facilityManager;
+    FacilityDataManager _facilityDataManager;
     Vector2 _prefabSize;
     int _buttonKinds;
     float _layoutSpacing;
-    void Awake()
-    {
-        _facilityManager = FindObjectOfType<FacilityManager>();
-    }
     void Start()
     {
+        _facilityDataManager = FindAnyObjectByType<FacilityDataManager>();
         Vector2 _prefabSize = _buttonPrefab.GetComponent<RectTransform>().sizeDelta;
-        int _buttonKinds = _facilityManager.FacilityStock.Length;
+        int _buttonKinds = _facilityDataManager.FacilityDataBase.FacilityData.Count;
         float _layoutSpacing = _content.GetComponent<VerticalLayoutGroup>().spacing;
         SetButtons();
     }
@@ -37,17 +34,19 @@ public class FacilityListSetter : MonoBehaviour
     void SetButtons()
     {
         Vector2 _prefabSize = _buttonPrefab.GetComponent<RectTransform>().sizeDelta;
-        int _buttonKinds = _facilityManager.FacilityStock.Length;
+        int _buttonKinds = _facilityDataManager.FacilityDataBase.FacilityData.Count;
         float _layoutSpacing = _content.GetComponent<VerticalLayoutGroup>().spacing;
         _content.sizeDelta = new Vector2(_content.sizeDelta.x, _prefabSize.y * _buttonKinds + _layoutSpacing * (_buttonKinds - 1));
         for (int i = 0; i < _buttonKinds; i++)
         {
             GameObject button = Instantiate(_buttonPrefab, _content);
-            ButtonTextSetter buttonTextSetter = button.GetComponent<ButtonTextSetter>();
-            //ボタンに建築する施設のデータを結びつける（IDか何かを持たせたほうが良いかも）
-            buttonTextSetter.Facility = _facilityManager.GetFacilityData(i);
-            //ボタンプレハブ内の関数でテキストを変える処理を呼び出す
-            buttonTextSetter.SetText(i);
+            ButtonContentSetter buttonContentSetter = button.GetComponent<ButtonContentSetter>();
+            //ボタンに建築する施設のデータを結びつける
+            buttonContentSetter.Facility = _facilityDataManager.GetFacilityData(i);
+            //ボタンの機能を追加する処理を呼び出す
+            buttonContentSetter.SetOnClick();
+            //ボタンプレハブ内のテキストを変える処理を呼び出す
+            buttonContentSetter.SetText();
         }
     }
 }

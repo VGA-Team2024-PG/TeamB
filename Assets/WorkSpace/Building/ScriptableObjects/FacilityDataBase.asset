@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cc45f0249765534f8180b7a6abdda01, type: 3}
-  m_Name: Camp
+  m_Script: {fileID: 11500000, guid: 17c0bfa11dd1ca248b2fdbaafe72b67a, type: 3}
+  m_Name: FacilityDataBase
   m_EditorClassIdentifier: 
-  _name: "\u30AD\u30E3\u30F3\u30D7"
-  _price: 0
-  _buildingStock: 0
-  _workTime: 0
-  _prefab: {fileID: 0}
+  _facilityData:
+  - {fileID: 11400000, guid: 9c12489afb035364081ce7a99cbf00f5, type: 2}
+  - {fileID: 11400000, guid: c879524bba3a0bf4693531d2cbca4272, type: 2}
