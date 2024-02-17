@@ -3,16 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+/// <summary>
+/// 施設のデータ管理を行う
+/// </summary>
 public class FacilityDataManager : MonoBehaviour
 {
     /// <summary>
-    /// 仮の建物のデータ
+    /// 施設のデータ
     /// </summary>
     [SerializeField] FacilityDataBase _facilityData;
     public FacilityDataBase FacilityDataBase => _facilityData;
     /// <summary>
-    /// 建築物の生産数
+    /// 施設の生産数
     /// </summary>
     int[] _facilityStock;
     public int[] FacilityStock => _facilityStock;
@@ -21,10 +23,10 @@ public class FacilityDataManager : MonoBehaviour
         _facilityStock = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
     }
     /// <summary>
-    /// 建築物の生産数を増やす
+    /// 施設の生産数を増やす
     /// </summary>
-    /// <param name="building">建築物の名前</param>
-    public void SetFacilityStock(FacilityEnum facilityEnum)
+    /// <param name="building">施設の名前</param>
+    public void IncreaseFacilityStock(FacilityEnum facilityEnum)
     {
         _facilityStock[(int)facilityEnum]++;
     }

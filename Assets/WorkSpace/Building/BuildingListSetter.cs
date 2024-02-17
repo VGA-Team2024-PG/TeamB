@@ -21,22 +21,21 @@ public class BuildingListSetter : MonoBehaviour
     float _layoutSpacing;
     void Start()
     {
-        _facilityDataManager = FindAnyObjectByType<FacilityDataManager>();
+        _facilityDataManager = FindObjectOfType<FacilityDataManager>();
         Vector2 _prefabSize = _buttonPrefab.GetComponent<RectTransform>().sizeDelta;
         int _buttonKinds = _facilityDataManager.FacilityDataBase.FacilityData.Count;
         float _layoutSpacing = _content.GetComponent<VerticalLayoutGroup>().spacing;
-        SetButtons();
+        ResetButtonsList();
     }
-    void Update()
-    {
-
-    }
-    void SetButtons()
+    /// <summary>
+    /// ボタンの並びを直す
+    /// </summary>
+    public void ResetButtonsList()
     {
         Vector2 _prefabSize = _buttonPrefab.GetComponent<RectTransform>().sizeDelta;
         int _buttonKinds = _facilityDataManager.FacilityDataBase.FacilityData.Count;
         float _layoutSpacing = _content.GetComponent<VerticalLayoutGroup>().spacing;
-        _content.sizeDelta = new Vector2(_content.sizeDelta.x, _prefabSize.y * _buttonKinds + _layoutSpacing * (_buttonKinds - 1));
+        _content.sizeDelta = new Vector2(_content.sizeDelta.x, _prefabSize.y * _buttonKinds + _layoutSpacing * (_buttonKinds + 1));
         for (int i = 0; i < _buttonKinds; i++)
         {
             GameObject button = Instantiate(_buttonPrefab, _content);
