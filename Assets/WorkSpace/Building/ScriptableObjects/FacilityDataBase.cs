@@ -3,5 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName ="FacilityDataBase")]
 public class FacilityDataBase : ScriptableObject
 {
-    public List<Facility> FacilityData;
+    [SerializeField] List<Facility> _facilityData;
+    public List<Facility> FacilityData => _facilityData;
 }
