@@ -118,10 +118,10 @@ public class BuildingManager : MonoBehaviour
             Destroy(_buildingFacilityObj.GetComponent<DragDetector>());
             GameObject.Find($"BuyUI{_buildingFacility.Name}").GetComponent<ButtonContentSetter>().SetText();
             //ここで施工金額を現在のリソースから減らす
-            //リソースを減らす関数(_priceBuildingFacilityObj);
+            //リソースを変動させる関数(_priceBuildingFacilityObj);
 
-            //ここに施設が持つ機能を起動する関数などを呼び出す
-            //_buildingFacility.GetComponent<>().
+            //ここで施設が建築中になるような処理を呼び出す
+
         }
         else
         {
