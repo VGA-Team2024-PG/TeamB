@@ -48,11 +48,11 @@ public class DataManager : MonoBehaviour
 
     public void ChangeGold(int value)//ƒS[ƒ‹ƒh‚ğ‘‚â‚·
     {
-        _gold += value;
+        Gold += value;
     }
 
     public void ChangeResource(int value)//•º—Í‚ğ‘‚â‚·
     {
-        _resource += value;
+        Resource += value;
     }
 }
