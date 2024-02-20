@@ -32,6 +32,6 @@ public class ButtonActionSetter : MonoBehaviour
     /// <param name="_facilityStock"></param>
     public void SetText()
     {
-        _buttonText.text = $"{_facility.name} {_facilityDataManager.FacilityStock[(int)_facility.FacilityEnum]}/{_facility.FacilityStock}";
+        _buttonText.text = $"{_facility.name} {_facilityDataManager.FacilityCount[(int)_facility.FacilityEnum]}/{_facility.FacilityStock}";
     }
 }

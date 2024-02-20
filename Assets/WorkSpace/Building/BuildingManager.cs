@@ -47,7 +47,6 @@ public class BuildingManager : MonoBehaviour
     BoxCollider _colliderFacility;
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Confined;
         _facilityDataManager = FindObjectOfType<FacilityDataManager>();
     }
     void Update()
@@ -67,7 +66,7 @@ public class BuildingManager : MonoBehaviour
         _buildingFacility = _facilityDataManager.SearchFacility(facilityEnum);
         _buildingFacilityObj = _buildingFacility.Prefab;
         //ストック残数の確認
-        if (_buildingFacility.FacilityStock > _facilityDataManager.FacilityStock[(int)facilityEnum])
+        if (_buildingFacility.FacilityStock > _facilityDataManager.FacilityCount[(int)facilityEnum])
         {
             //ここで現在持っているリソース量を確認する
             _priceBuildingFacilityObj = _buildingFacility.Price;
@@ -117,7 +116,7 @@ public class BuildingManager : MonoBehaviour
         {
             _colliderFacility.isTrigger = false;
             _isBuilding = false;
-            _facilityDataManager.IncreaseFacilityStock(_buildingFacility.FacilityEnum);
+            _facilityDataManager.IncreaseFacilityCount(_buildingFacility.FacilityEnum);
             Destroy(_buildingFacilityObjRb);
             Destroy(_buildingFacilityObj.GetComponent<DragDetector>());
             GameObject.Find($"UIBuyButton{_buildingFacility.Name}").GetComponent<ButtonActionSetter>().SetText();
