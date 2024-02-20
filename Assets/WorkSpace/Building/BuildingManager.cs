@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using Unity.VisualScripting;
 using UnityEngine;
 /// <summary>
 /// <para>施設を建築中に管理する</para>
@@ -74,7 +75,10 @@ public class BuildingManager : MonoBehaviour
             //if ( >= _priceBuildingFacilityObj)
             {
                 _buildingFacilityObj = Instantiate(_buildingFacility.Prefab, _spawnPos.transform.position + _floor.transform.up * (_buildingFacilityObj.transform.localScale.y / (2f - _adjustSpawnYPos)), _floor.transform.rotation);
-                _buildingFacilityObjRb= _buildingFacilityObj.AddComponent<Rigidbody>();
+                if(_buildingFacilityObj.TryGetComponent<Rigidbody>(out _buildingFacilityObjRb) == false)
+                {
+                    _buildingFacilityObjRb = _buildingFacilityObj.AddComponent<Rigidbody>();
+                }
                 _buildingFacilityObjRb.useGravity = false;
                 _colliderFacility = _buildingFacilityObj.GetComponent<BoxCollider>();
                 _colliderFacility.isTrigger = true;
@@ -99,7 +103,7 @@ public class BuildingManager : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         Ray ray = RectTransformUtility.ScreenPointToRay(Camera.main, mousePos);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, _maxRayDistance, layerMask: 3, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(ray, out hit, _maxRayDistance, LayerMask.GetMask("Floor"), QueryTriggerInteraction.Ignore))
         {
             _buildingFacilityObj.transform.position = hit.point + _floor.transform.up * (_buildingFacilityObj.transform.localScale.y / (2f - _adjustSpawnYPos));
         }
@@ -119,9 +123,7 @@ public class BuildingManager : MonoBehaviour
             GameObject.Find($"BuyUI{_buildingFacility.Name}").GetComponent<ButtonContentSetter>().SetText();
             //ここで施工金額を現在のリソースから減らす
             //リソースを変動させる関数(_priceBuildingFacilityObj);
-
-            //ここで施設が建築中になるような処理を呼び出す
-
+            
         }
         else
         {
@@ -133,8 +135,7 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     public void CancelBuilding()
     {
-        _priceBuildingFacilityObj = 0; 
-        _colliderFacility.isTrigger = false;
+        _priceBuildingFacilityObj = 0;
         _isBuilding = false;
         Destroy(_buildingFacilityObj);
     }
