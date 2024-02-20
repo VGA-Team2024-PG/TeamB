@@ -1,51 +1,58 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// zR({İ)‚ÌŒø‰Ê
+/// é‰±å±±(æ–½è¨­)ã®åŠ¹æœ
 /// </summary>
 public class MineFunction : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField, Tooltip("ƒŠƒ\[ƒX‚ª‘‚¦‚éŠÔŠu(s)")] float _span = 1f;
-    [SerializeField, Tooltip("n•b‚Å‘‚¦‚éƒŠƒ\[ƒX—Ê")] float _resourceIncreaseAmount = 10f;
-    [SerializeField, Tooltip("’™‘ ‚Å‚«‚éƒŠƒ\[ƒX‚ÌãŒÀ")] float _storageLimit = 1000f;
+    [SerializeField, Tooltip("ã‚´ãƒ¼ãƒ«ãƒ‰ãŒå¢—ãˆã‚‹é–“éš”(s)")] float _span = 1f;
+    [SerializeField, Tooltip("nç§’ã§å¢—ãˆã‚‹ã‚´ãƒ¼ãƒ«ãƒ‰é‡")] int _goldIncreaseAmount = 10;
+    [SerializeField, Tooltip("è²¯è”µã§ãã‚‹ã‚´ãƒ¼ãƒ«ãƒ‰ã®ä¸Šé™")] float _storageLimit = 1000f;
 
-    ResourceManager _resourceManager;
+    DataManager _dataManager;
+    ConstructionState _constructionState;
 
-    // Œo‰ßŠÔ(_span‚ÅƒŠƒZƒbƒg)
+    // çµŒéæ™‚é–“(_spanã§ãƒªã‚»ãƒƒãƒˆ)
     float _currentTime = 0;
-    // Œ»İ‚Ì’™‘ —Ê
-    float _currentResource = 0;
+    // ç¾åœ¨ã®è²¯è”µé‡
+    int _currentGold = 0;
 
     void Start()
     {
-        //_resourceManager = ResourceManager.Instance;
+        _dataManager = DataManager.Instance;
+        _constructionState = GetComponent<ConstructionState>();
     }
 
     void Update()
     {
-        _currentTime += Time.deltaTime;
-        if (_currentTime > _span)
+        // å»ºè¨­çŠ¶æ…‹ãŒç¨¼åƒä¸­ã«ãªã£ãŸã‚‰
+        if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.InOperation)
         {
-            if (_currentResource < _storageLimit)
+            _currentTime += Time.deltaTime;
+            if (_currentTime > _span)
             {
-                _currentResource += _resourceIncreaseAmount;
-                _currentTime = 0;
-            }
-            else
-            {
-                _currentTime = 0;
+                if (_currentGold < _storageLimit)
+                {
+                    _currentGold += _goldIncreaseAmount;
+                    _currentTime = 0;
+                }
+                else
+                {
+                    _currentTime = 0;
+                }
             }
         }
+
     }
 
     /// <summary>
-    /// {İ‚ğƒNƒŠƒbƒN‚µ‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚é
+    /// æ–½è¨­ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ãŸã¨ãã«å‘¼ã°ã‚Œã‚‹
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        _resourceManager.AddResorce(_currentResource);
-        _currentResource = 0;
+        _dataManager.ChangeGold(_currentGold);
+        _currentGold = 0;
     }
 }
