@@ -27,7 +27,7 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
     void Update()
     {
         // 建設状態が稼働中になったら
-        if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.InOperation)
+        if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.Working)
         {
             _currentTime += Time.deltaTime;
             if (_currentTime > _span)
