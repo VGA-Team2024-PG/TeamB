@@ -120,10 +120,10 @@ public class BuildingManager : MonoBehaviour
             _facilityDataManager.IncreaseFacilityStock(_buildingFacility.FacilityEnum);
             Destroy(_buildingFacilityObjRb);
             Destroy(_buildingFacilityObj.GetComponent<DragDetector>());
-            GameObject.Find($"BuyUI{_buildingFacility.Name}").GetComponent<ButtonContentSetter>().SetText();
+            GameObject.Find($"UIBuyButton{_buildingFacility.Name}").GetComponent<ButtonActionSetter>().SetText();
             //ここで施工金額を現在のリソースから減らす
             //リソースを変動させる関数(_priceBuildingFacilityObj);
-            
+            //_buildingFacilityObj.SendMessage
         }
         else
         {

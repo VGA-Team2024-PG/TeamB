@@ -4,7 +4,7 @@ using UnityEngine.UI;
 /// <summary>
 /// <para>施設リストの表示を更新する</para>
 /// </summary>
-public class BuildingListSetter : MonoBehaviour
+public class UIBuildingContentSetter : MonoBehaviour
 {
 
     /// <summary>
@@ -39,7 +39,7 @@ public class BuildingListSetter : MonoBehaviour
         for (int i = 0; i < _buttonKinds; i++)
         {
             GameObject button = Instantiate(_buttonPrefab, _content);
-            ButtonContentSetter buttonContentSetter = button.GetComponent<ButtonContentSetter>();
+            ButtonActionSetter buttonContentSetter = button.GetComponent<ButtonActionSetter>();
             //ボタンに建築する施設のデータを結びつける
             buttonContentSetter.Facility = _facilityDataManager.GetFacilityData(i);
             //ボタンの機能を追加する処理を呼び出す

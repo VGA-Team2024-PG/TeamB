@@ -10,7 +10,7 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
     [SerializeField, Tooltip("n秒で増えるリソース量")] float _resourceIncreaseAmount = 10f;
     [SerializeField, Tooltip("貯蔵できるリソースの上限")] float _storageLimit = 1000f;
 
-    ResourceManager _resourceManager;
+    //ResourceManager _resourceManager;
 
     // 経過時間(_spanでリセット)
     float _currentTime = 0;
@@ -19,7 +19,7 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
 
     void Start()
     {
-        _resourceManager = ResourceManager.Instance;
+        //_resourceManager = ResourceManager.Instance;
     }
 
     void Update()
@@ -45,7 +45,7 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        _resourceManager.AddResorce(_currentResource);
+        //_resourceManager.AddResorce(_currentResource);
         _currentResource = 0;
     }
 }

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonContentSetter : MonoBehaviour
+public class ButtonActionSetter : MonoBehaviour
 {
     [SerializeField] Button _button;
     [SerializeField] TMP_Text _buttonText;
@@ -20,7 +20,7 @@ public class ButtonContentSetter : MonoBehaviour
     }
     void Start()
     {
-        this.name = $"BuyUI{_facility.Name}";
+        this.name = $"UIBuyButton{_facility.Name}";
     }
     public void SetOnClick()
     {
