@@ -8,12 +8,15 @@ public class SoldierTrainingSchoolFunction : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField, Tooltip("消費ゴールド")] int _price = 100;
     [SerializeField, Tooltip("兵士のプレハブ")] GameObject _soldierPrefab;
+    [SerializeField, Tooltip("クリックで増える兵士の数")] int _addResource = 1;
 
-    ResourceManager _resourceManager;
+    DataManager _dataManager;
+    ConstructionState _constructionState;
 
     void Start()
     {
-        _resourceManager = ResourceManager.Instance;
+        _dataManager = DataManager.Instance;
+        _constructionState = GetComponent<ConstructionState>();
     }
 
     void Update()
@@ -27,19 +30,24 @@ public class SoldierTrainingSchoolFunction : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (_resourceManager.Resorce > _price)
+        // 建設状態が稼働中になったら
+        if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.InOperation)
         {
-            //if (兵士の作成上限数に達していなければ)
+            if (_dataManager.Gold > _price)
             {
-                _resourceManager.UseResorce(_price);
-                Instantiate(_soldierPrefab, this.transform.position, Quaternion.identity);
+                //if (兵士の作成上限数に達していなければ)
+                {
+                    _dataManager.ChangeGold(_price);
+                    Instantiate(_soldierPrefab, this.transform.position, Quaternion.identity);
 
-                // 兵士のカウントを増やす関数が欲しい
+                    _dataManager.ChangeResource(_addResource);
+                }
+            }
+            else
+            {
+                Debug.Log("ゴールドが足りません");
             }
         }
-        else
-        {
-            Debug.Log("ゴールドが足りません");
-        }
+
     }
 }

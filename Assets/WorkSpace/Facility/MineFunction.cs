@@ -6,37 +6,44 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class MineFunction : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField, Tooltip("リソースが増える間隔(s)")] float _span = 1f;
-    [SerializeField, Tooltip("n秒で増えるリソース量")] float _goldIncreaseAmount = 10f;
-    [SerializeField, Tooltip("貯蔵できるリソースの上限")] float _storageLimit = 1000f;
+    [SerializeField, Tooltip("ゴールドが増える間隔(s)")] float _span = 1f;
+    [SerializeField, Tooltip("n秒で増えるゴールド量")] int _goldIncreaseAmount = 10;
+    [SerializeField, Tooltip("貯蔵できるゴールドの上限")] float _storageLimit = 1000f;
 
-    ResourceManager _resourceManager;
+    DataManager _dataManager;
+    ConstructionState _constructionState;
 
     // 経過時間(_spanでリセット)
     float _currentTime = 0;
     // 現在の貯蔵量
-    float _currentGold = 0;
+    int _currentGold = 0;
 
     void Start()
     {
-        _resourceManager = ResourceManager.Instance;
+        _dataManager = DataManager.Instance;
+        _constructionState = GetComponent<ConstructionState>();
     }
 
     void Update()
     {
-        _currentTime += Time.deltaTime;
-        if (_currentTime > _span)
+        // 建設状態が稼働中になったら
+        if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.InOperation)
         {
-            if (_currentGold < _storageLimit)
+            _currentTime += Time.deltaTime;
+            if (_currentTime > _span)
             {
-                _currentGold += _goldIncreaseAmount;
-                _currentTime = 0;
-            }
-            else
-            {
-                _currentTime = 0;
+                if (_currentGold < _storageLimit)
+                {
+                    _currentGold += _goldIncreaseAmount;
+                    _currentTime = 0;
+                }
+                else
+                {
+                    _currentTime = 0;
+                }
             }
         }
+
     }
 
     /// <summary>
@@ -45,7 +52,7 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        _resourceManager.AddResorce(_currentGold);
+        _dataManager.ChangeGold(_currentGold);
         _currentGold = 0;
     }
 }
