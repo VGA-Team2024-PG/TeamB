@@ -1,0 +1,10 @@
+diff a/Assets/WorkSpace/Facility/MineFunction.cs b/Assets/WorkSpace/Facility/MineFunction.cs	(rejected hunks)
+@@ -10,7 +10,7 @@
+     [SerializeField, Tooltip("n�b�ő����郊�\�[�X��")] float _resourceIncreaseAmount = 10f;
+     [SerializeField, Tooltip("�����ł��郊�\�[�X�̏��")] float _storageLimit = 1000f;
+ 
+-    ResourceManager _resourceManager;
++    //ResourceManager _resourceManager;
+ 
+     // �o�ߎ���(_span�Ń��Z�b�g)
+     float _currentTime = 0;
