@@ -9,7 +9,6 @@ using UnityEngine;
 /// </summary>
 public class BuildingManager : MonoBehaviour
 {
-    FacilityDataManager _facilityDataManager;
     /// <summary>
     /// 建築中か区別するbool
     /// </summary>
@@ -45,8 +44,11 @@ public class BuildingManager : MonoBehaviour
     int _priceBuildingFacilityObj;
     Facility _buildingFacility;
     BoxCollider _colliderFacility;
+    FacilityDataManager _facilityDataManager;
+    UIManager _UIManager;
     void Start()
     {
+        _UIManager = FindObjectOfType<UIManager>();
         _facilityDataManager = FindObjectOfType<FacilityDataManager>();
     }
     void Update()
@@ -73,6 +75,7 @@ public class BuildingManager : MonoBehaviour
             //施工に必要な金額を持っているなら施設を生成する
             //if ( >= _priceBuildingFacilityObj)
             {
+                _UIManager.ChangeUIBuilding();
                 _buildingFacilityObj = Instantiate(_buildingFacility.Prefab, _spawnPos.transform.position + _floor.transform.up * (_buildingFacilityObj.transform.localScale.y / (2f - _adjustSpawnYPos)), _floor.transform.rotation);
                 if(_buildingFacilityObj.TryGetComponent<Rigidbody>(out _buildingFacilityObjRb) == false)
                 {
@@ -119,10 +122,11 @@ public class BuildingManager : MonoBehaviour
             _facilityDataManager.IncreaseFacilityCount(_buildingFacility.FacilityEnum);
             Destroy(_buildingFacilityObjRb);
             Destroy(_buildingFacilityObj.GetComponent<DragDetector>());
-            GameObject.Find($"UIBuyButton{_buildingFacility.Name}").GetComponent<ButtonActionSetter>().SetText();
-            //ここで施工金額を現在のリソースから減らす
-            //リソースを変動させる関数(_priceBuildingFacilityObj);
+            //ここで施工金額を現在のゴールドから減らす
+            //ゴールドを変動させる関数(_priceBuildingFacilityObj);
+            //プレハブの遷移をするメソッドを呼ぶ
             //_buildingFacilityObj.SendMessage
+            _UIManager.ChangeUINormal();
         }
         else
         {
