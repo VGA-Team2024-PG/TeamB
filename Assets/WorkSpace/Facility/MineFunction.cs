@@ -6,16 +6,21 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class MineFunction : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField, Tooltip("ゴールドが増える間隔(s)")] float _span = 1f;
-    [SerializeField, Tooltip("n秒で増えるゴールド量")] int _goldIncreaseAmount = 10;
-    [SerializeField, Tooltip("貯蔵できるゴールドの上限")] float _storageLimit = 1000f;
-
+    /// <summary>
+    /// ゴールドが増える間隔(s)
+    /// </summary>
+    [SerializeField] float _span = 1f;
+    /// <summary>
+    /// n秒で増えるゴールド量
+    /// </summary>
+    [SerializeField] int _goldIncreaseAmount = 10;
+    /// <summary>
+    /// 貯蔵できるゴールドの上限
+    /// </summary>
+    [SerializeField] float _storageLimit = 1000f;
     DataManager _dataManager;
     ConstructionState _constructionState;
-
-    // 経過時間(_spanでリセット)
-    float _currentTime = 0;
-    // 現在の貯蔵量
+    float _elapsedTime = 0;
     int _currentGold = 0;
 
     void Start()
@@ -26,20 +31,19 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
 
     void Update()
     {
-        // 建設状態が稼働中になったら
         if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.Working)
         {
-            _currentTime += Time.deltaTime;
-            if (_currentTime > _span)
+            _elapsedTime += Time.deltaTime;
+            if (_elapsedTime >= _span)
             {
                 if (_currentGold < _storageLimit)
                 {
                     _currentGold += _goldIncreaseAmount;
-                    _currentTime = 0;
+                    _elapsedTime = 0;
                 }
                 else
                 {
-                    _currentTime = 0;
+                    _elapsedTime = 0;
                 }
             }
         }
