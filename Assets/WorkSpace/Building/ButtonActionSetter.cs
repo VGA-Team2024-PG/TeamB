@@ -7,7 +7,7 @@ public class ButtonActionSetter : MonoBehaviour
     [SerializeField] Button _button;
     [SerializeField] TMP_Text _buttonText;
     BuildingManager _buildingManager;
-    FacilityDataManager _facilityDataManager;
+    DataManager _dataManager;
     /// <summary>
     /// ボタンに紐づけられた施設データ
     /// </summary>
@@ -15,7 +15,7 @@ public class ButtonActionSetter : MonoBehaviour
     public Facility Facility { set {  _facility = value; } }
     void Awake()
     {
-        _facilityDataManager = FindObjectOfType<FacilityDataManager>();
+        _dataManager = FindObjectOfType<DataManager>();
         _buildingManager = FindObjectOfType<BuildingManager>();
     }
     void Start()
@@ -32,6 +32,6 @@ public class ButtonActionSetter : MonoBehaviour
     /// <param name="_facilityStock"></param>
     public void SetText()
     {
-        _buttonText.text = $"{_facility.name} {_facilityDataManager.FacilityCount[(int)_facility.FacilityEnum]}/{_facility.FacilityStock}";
+        _buttonText.text = $"{_facility.name} {_dataManager.FacilityCount[(int)_facility.FacilityEnum]}/{_facility.FacilityStock}";
     }
 }

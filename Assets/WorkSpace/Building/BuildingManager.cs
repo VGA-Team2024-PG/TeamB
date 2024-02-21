@@ -41,13 +41,13 @@ public class BuildingManager : MonoBehaviour
     int _priceBuildingFacilityObj;
     Facility _buildingFacility;
     BoxCollider _colliderFacility;
-    FacilityDataManager _facilityDataManager;
+    DataManager _dataManager;
     UIManager _UIManager;
     RaycastHit _debugHit;
     void Start()
     {
         _UIManager = FindObjectOfType<UIManager>();
-        _facilityDataManager = FindObjectOfType<FacilityDataManager>();
+        _dataManager = FindObjectOfType<DataManager>();
     }
     void Update()
     {
@@ -63,10 +63,10 @@ public class BuildingManager : MonoBehaviour
     public void BuildStart(FacilityEnum facilityEnum)
     {
         //生成する施設のデータを取得
-        _buildingFacility = _facilityDataManager.GetFacilityData((int)facilityEnum);
+        _buildingFacility = _dataManager.GetFacilitydata((int)facilityEnum);
         _buildingFacilityObj = _buildingFacility.Prefab;
         //ストック残数の確認
-        if (_buildingFacility.FacilityStock > _facilityDataManager.FacilityCount[(int)facilityEnum])
+        if (_buildingFacility.FacilityStock > _dataManager.FacilityCount[(int)facilityEnum])
         {
             //ここで現在持っているリソース量を確認する
             _priceBuildingFacilityObj = _buildingFacility.Price;
@@ -107,11 +107,10 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     public void FinishBuilding()
     {
-
         if (!Physics.BoxCast(_buildingFacilityObj.transform.position + Vector3.up * (_maxRayDistance - 20), _buildingFacilityObj.transform.localScale / 2, -_buildingFacilityObj.transform.up, out _debugHit, Quaternion.identity, _maxRayDistance, LayerMask.GetMask("Facility")))
         {
             _isBuilding = false;_buildingFacilityObj.layer = LayerMask.NameToLayer("Facility");
-            _facilityDataManager.IncreaseFacilityCount(_buildingFacility.FacilityEnum);
+            _dataManager.GetFacilitydata((int)_buildingFacility.FacilityEnum);
             Destroy(_buildingFacilityObj.GetComponent<DragDetector>());
             //ここで施工金額を現在のゴールドから減らす
             //ゴールドを変動させる関数(_priceBuildingFacilityObj);
