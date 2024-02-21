@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _facilityEnum: 1
   _name: TrainingGround
-  _price: 100
-  _facilityStock: 2
-  _workTime: 3
-  _prefab: {fileID: 624459806833072852, guid: b4538cf4d204532408f552b4be1605f2, type: 3}
+  _price: 1000
+  _facilityStock: 1
+  _workTime: 300
+  _prefab: {fileID: 7172196803736618328, guid: 618145fa656c3ef438cadcfd2262c6de, type: 3}

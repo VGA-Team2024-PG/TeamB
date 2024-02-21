@@ -4,6 +4,6 @@
 public enum FacilityEnum
 {
     Camp,
-    SoldierTrainingSchool,
+    TrainingGround,
     Mine
 }

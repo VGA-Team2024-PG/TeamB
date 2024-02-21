@@ -1,24 +1,19 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using Unity.VisualScripting;
 using UnityEngine;
 /// <summary>
 /// <para>施設を建築中に管理する</para>
 /// </summary>
-public class BuildingManager : MonoBehaviour
+public class BuildingSpawnManager : MonoBehaviour
 {
     /// <summary>
     /// 建築中か区別するbool
     /// </summary>
     bool _isBuilding = false;
-    bool _isDragging = false;
-    public  bool IsDragging { set { _isDragging = value; } }
+    bool _isPlacable = false;
+    public  bool IsPlacable { set { _isPlacable = value; } }
     /// <summary>
     /// rayが届く最大距離
     /// </summary>
-    [SerializeField] float _maxRayDistance = 30f;
+    [SerializeField] public float _maxRayDistance = 30f;
     /// <summary>
     /// 施設を設置する床
     /// </summary>
@@ -28,10 +23,6 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     [SerializeField] GameObject _spawnPos;
     /// <summary>
-    /// 施設を設置する時に浮かす高さの係数(施設の高さ/２に係数をかけた数浮上する)
-    /// </summary>
-    [SerializeField]float _adjustSpawnYPos = 2.001f; 
-    /// <summary>
     /// 現在設置している施設
     /// </summary>
     GameObject _buildingFacilityObj;
@@ -40,7 +31,6 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     int _priceBuildingFacilityObj;
     Facility _buildingFacility;
-    BoxCollider _colliderFacility;
     DataManager _dataManager;
     UIManager _UIManager;
     RaycastHit _debugHit;
@@ -48,13 +38,6 @@ public class BuildingManager : MonoBehaviour
     {
         _UIManager = FindObjectOfType<UIManager>();
         _dataManager = FindObjectOfType<DataManager>();
-    }
-    void Update()
-    {
-        if(_isBuilding && _isDragging)
-        {
-            MoveFacility();
-        }
     }
     /// <summary>
     /// 施設の設置を開始する関数
@@ -66,7 +49,7 @@ public class BuildingManager : MonoBehaviour
         _buildingFacility = _dataManager.GetFacilitydata((int)facilityEnum);
         _buildingFacilityObj = _buildingFacility.Prefab;
         //ストック残数の確認
-        if (_buildingFacility.FacilityStock > _dataManager.FacilityCount[(int)facilityEnum])
+        if (_dataManager.Facilitystock[(int)facilityEnum] > 0)
         {
             //ここで現在持っているリソース量を確認する
             _priceBuildingFacilityObj = _buildingFacility.Price;
@@ -74,8 +57,7 @@ public class BuildingManager : MonoBehaviour
             //if ( >= _priceBuildingFacilityObj)
             {
                 _UIManager.ChangeUIBuilding();
-                _buildingFacilityObj = Instantiate(_buildingFacility.Prefab, _spawnPos.transform.position + _floor.transform.up * (_buildingFacilityObj.transform.localScale.y / (2f - _adjustSpawnYPos)), Quaternion.identity);
-                _colliderFacility = _buildingFacilityObj.GetComponent<BoxCollider>();
+                _buildingFacilityObj = Instantiate(_buildingFacility.Prefab, _spawnPos.transform.position, Quaternion.identity);
                 _isBuilding = true;
             }
             //else
@@ -88,30 +70,17 @@ public class BuildingManager : MonoBehaviour
             Debug.Log("施設の最大設置可能数を超えています");
         }
     }
-
-    /// <summary>
-    /// 設置中の施設をドラッグしているかを確認して、動かす関数
-    /// </summary>
-    void MoveFacility()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        Ray ray = RectTransformUtility.ScreenPointToRay(Camera.main, mousePos);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, _maxRayDistance, LayerMask.GetMask("Floor")))
-        {
-            _buildingFacilityObj.transform.position = hit.point + _floor.transform.up * (_buildingFacilityObj.transform.localScale.y / (2f - _adjustSpawnYPos));
-        }
-    }
     /// <summary>
     /// 施設の設置を決定する関数
     /// </summary>
     public void FinishBuilding()
     {
-        if (!Physics.BoxCast(_buildingFacilityObj.transform.position + Vector3.up * (_maxRayDistance - 20), _buildingFacilityObj.transform.localScale / 2, -_buildingFacilityObj.transform.up, out _debugHit, Quaternion.identity, _maxRayDistance, LayerMask.GetMask("Facility")))
+        if (_isBuilding && _isPlacable)
         {
-            _isBuilding = false;_buildingFacilityObj.layer = LayerMask.NameToLayer("Facility");
-            _dataManager.GetFacilitydata((int)_buildingFacility.FacilityEnum);
-            Destroy(_buildingFacilityObj.GetComponent<DragDetector>());
+            _isBuilding = false;
+            _buildingFacilityObj.layer = LayerMask.NameToLayer("Facility");
+            _dataManager.DecreaseFacilityStock(_buildingFacility.FacilityEnum);
+            Destroy(_buildingFacilityObj.GetComponent<FacilityMover>());
             //ここで施工金額を現在のゴールドから減らす
             //ゴールドを変動させる関数(_priceBuildingFacilityObj);
             //プレハブの遷移をするメソッドを呼ぶ

@@ -355,10 +355,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 381409606}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2baaeb932386edd4aacc05827909c01d, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e7e39855bfe4324484789526ae1d124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _facilityData: {fileID: 11400000, guid: 8ce779ab13ae2164b90b48d4bcd4f8a5, type: 2}
+  _facilitydata: {fileID: 11400000, guid: 8ce779ab13ae2164b90b48d4bcd4f8a5, type: 2}
 --- !u!1 &383007766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1239,6 +1239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1387875652}
   - component: {fileID: 1387875651}
+  - component: {fileID: 1387875653}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -1276,6 +1277,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1387875653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387875650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ca0404c48390f4997f888e1c0f1c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _content: {fileID: 480887666}
+  _buttonPrefab: {fileID: 871942276247886437, guid: d03197e050403cb4bad5537dfe1c3023, type: 3}
 --- !u!1 &1429332403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,7 +1455,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1758243562}
-        m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: BuildingSpawnManager, Assembly-CSharp
         m_MethodName: FinishBuilding
         m_Mode: 1
         m_Arguments:
@@ -1605,7 +1620,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1758243562}
-        m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: BuildingSpawnManager, Assembly-CSharp
         m_MethodName: CancelBuilding
         m_Mode: 1
         m_Arguments:
@@ -1854,7 +1869,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1758243561}
   - component: {fileID: 1758243562}
-  - component: {fileID: 1758243563}
   m_Layer: 0
   m_Name: BuildingManager
   m_TagString: Untagged
@@ -1886,27 +1900,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1758243560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40e8355069791714cb60562f805668ef, type: 3}
+  m_Script: {fileID: 11500000, guid: 3628cdff5e4dbca49ba307c7b8120e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxRayDistance: 100
+  _maxRayDistance: 30
   _floor: {fileID: 4176795716294357211}
   _spawnPos: {fileID: 396874771}
-  _adjustSpawnYPos: 0.1
---- !u!114 &1758243563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1758243560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ca0404c48390f4997f888e1c0f1c34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _content: {fileID: 480887666}
-  _buttonPrefab: {fileID: 871942276247886437, guid: d03197e050403cb4bad5537dfe1c3023, type: 3}
 --- !u!1 &1796875448
 GameObject:
   m_ObjectHideFlags: 0
