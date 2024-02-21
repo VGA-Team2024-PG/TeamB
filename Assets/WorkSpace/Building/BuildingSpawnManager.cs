@@ -78,9 +78,10 @@ public class BuildingSpawnManager : MonoBehaviour
         if (_isBuilding && _isPlacable)
         {
             _isBuilding = false;
+            _buildingFacilityObj.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Facility");
             _buildingFacilityObj.layer = LayerMask.NameToLayer("Facility");
             _dataManager.DecreaseFacilityStock(_buildingFacility.FacilityEnum);
-            Destroy(_buildingFacilityObj.GetComponent<FacilityMover>());
+            Destroy(_buildingFacilityObj.GetComponentInChildren<FacilityMover>());
             //ここで施工金額を現在のゴールドから減らす
             //ゴールドを変動させる関数(_priceBuildingFacilityObj);
             //プレハブの遷移をするメソッドを呼ぶ

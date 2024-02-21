@@ -27,7 +27,6 @@ public class UIBuildingContentSetter : MonoBehaviour
     public void ResetButtonsList()
     {
         int contentCnt = _content.childCount;
-        Debug.Log($"contentCnt/{contentCnt}");
         if (contentCnt == 0)
         {
             int _buttonKinds = _dataManager.Facilitystock.Length;
