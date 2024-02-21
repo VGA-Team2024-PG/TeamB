@@ -16,10 +16,10 @@ public class UIBuildingContentSetter : MonoBehaviour
     /// 表示するボタンのプレハブ
     /// </summary>
     [SerializeField] GameObject _buttonPrefab;
-    FacilityDataManager _facilityDataManager;
+    DataManager _dataManager;
     void Start()
     {
-        _facilityDataManager = FindObjectOfType<FacilityDataManager>();
+        _dataManager = FindObjectOfType<DataManager>();
     }
     /// <summary>
     /// ボタンの並びを直す
@@ -27,16 +27,15 @@ public class UIBuildingContentSetter : MonoBehaviour
     public void ResetButtonsList()
     {
         int contentCnt = _content.childCount;
-        Debug.Log($"contentCnt/{contentCnt}");
         if (contentCnt == 0)
         {
-            int _buttonKinds = _facilityDataManager.FacilityDataBase.FacilityData.Count;
+            int _buttonKinds = _dataManager.Facilitystock.Length;
             for (int i = 0; i < _buttonKinds; i++)
             {
                 GameObject button = Instantiate(_buttonPrefab, _content);
                 ButtonActionSetter buttonContentSetter = button.GetComponent<ButtonActionSetter>();
                 //ボタンに建築する施設のデータを結びつける
-                buttonContentSetter.Facility = _facilityDataManager.GetFacilityData(i);
+                buttonContentSetter.Facility = _dataManager.GetFacilitydata(i);
                 //ボタンの機能を追加する処理を呼び出す
                 buttonContentSetter.SetOnClick();
                 //ボタンプレハブ内のテキストを変える処理を呼び出す
