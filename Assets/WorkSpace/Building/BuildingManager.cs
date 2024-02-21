@@ -15,8 +15,6 @@ public class BuildingManager : MonoBehaviour
     bool _isBuilding = false;
     bool _isDragging = false;
     public  bool IsDragging { set { _isDragging = value; } }
-    bool _isPlacable = true;
-    public bool IsPlacable { set { _isPlacable = value; } }
     /// <summary>
     /// rayが届く最大距離
     /// </summary>
@@ -37,7 +35,6 @@ public class BuildingManager : MonoBehaviour
     /// 現在設置している施設
     /// </summary>
     GameObject _buildingFacilityObj;
-    Rigidbody _buildingFacilityObjRb;
     /// <summary>
     /// 現在設置している施設の価格
     /// </summary>
@@ -46,6 +43,7 @@ public class BuildingManager : MonoBehaviour
     BoxCollider _colliderFacility;
     FacilityDataManager _facilityDataManager;
     UIManager _UIManager;
+    RaycastHit _debugHit;
     void Start()
     {
         _UIManager = FindObjectOfType<UIManager>();
@@ -65,7 +63,7 @@ public class BuildingManager : MonoBehaviour
     public void BuildStart(FacilityEnum facilityEnum)
     {
         //生成する施設のデータを取得
-        _buildingFacility = _facilityDataManager.SearchFacility(facilityEnum);
+        _buildingFacility = _facilityDataManager.GetFacilityData((int)facilityEnum);
         _buildingFacilityObj = _buildingFacility.Prefab;
         //ストック残数の確認
         if (_buildingFacility.FacilityStock > _facilityDataManager.FacilityCount[(int)facilityEnum])
@@ -76,14 +74,8 @@ public class BuildingManager : MonoBehaviour
             //if ( >= _priceBuildingFacilityObj)
             {
                 _UIManager.ChangeUIBuilding();
-                _buildingFacilityObj = Instantiate(_buildingFacility.Prefab, _spawnPos.transform.position + _floor.transform.up * (_buildingFacilityObj.transform.localScale.y / (2f - _adjustSpawnYPos)), _floor.transform.rotation);
-                if(_buildingFacilityObj.TryGetComponent<Rigidbody>(out _buildingFacilityObjRb) == false)
-                {
-                    _buildingFacilityObjRb = _buildingFacilityObj.AddComponent<Rigidbody>();
-                }
-                _buildingFacilityObjRb.useGravity = false;
+                _buildingFacilityObj = Instantiate(_buildingFacility.Prefab, _spawnPos.transform.position + _floor.transform.up * (_buildingFacilityObj.transform.localScale.y / (2f - _adjustSpawnYPos)), Quaternion.identity);
                 _colliderFacility = _buildingFacilityObj.GetComponent<BoxCollider>();
-                _colliderFacility.isTrigger = true;
                 _isBuilding = true;
             }
             //else
@@ -105,7 +97,7 @@ public class BuildingManager : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         Ray ray = RectTransformUtility.ScreenPointToRay(Camera.main, mousePos);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, _maxRayDistance, LayerMask.GetMask("Floor"), QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(ray, out hit, _maxRayDistance, LayerMask.GetMask("Floor")))
         {
             _buildingFacilityObj.transform.position = hit.point + _floor.transform.up * (_buildingFacilityObj.transform.localScale.y / (2f - _adjustSpawnYPos));
         }
@@ -115,12 +107,11 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     public void FinishBuilding()
     {
-        if(_isPlacable)
+
+        if (!Physics.BoxCast(_buildingFacilityObj.transform.position + Vector3.up * (_maxRayDistance - 20), _buildingFacilityObj.transform.localScale / 2, -_buildingFacilityObj.transform.up, out _debugHit, Quaternion.identity, _maxRayDistance, LayerMask.GetMask("Facility")))
         {
-            _colliderFacility.isTrigger = false;
-            _isBuilding = false;
+            _isBuilding = false;_buildingFacilityObj.layer = LayerMask.NameToLayer("Facility");
             _facilityDataManager.IncreaseFacilityCount(_buildingFacility.FacilityEnum);
-            Destroy(_buildingFacilityObjRb);
             Destroy(_buildingFacilityObj.GetComponent<DragDetector>());
             //ここで施工金額を現在のゴールドから減らす
             //ゴールドを変動させる関数(_priceBuildingFacilityObj);

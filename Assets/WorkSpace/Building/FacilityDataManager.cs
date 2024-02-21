@@ -28,22 +28,6 @@ public class FacilityDataManager : MonoBehaviour
         _facilityCount[(int)facilityEnum]++;
     }
     /// <summary>
-    /// FacilityDataBase内のリストから与えられたenumを持つ施設データを返す/存在しない場合nullを返す
-    /// </summary>
-    /// <param name="facilityEnum">探したいenum</param>
-    /// <returns></returns>
-    public Facility SearchFacility(FacilityEnum facilityEnum)
-    {
-        foreach (Facility facility in _facilityData.FacilityData)
-        {
-            if (facility.FacilityEnum == facilityEnum)
-            {
-                return facility;
-            }
-        }
-        return null;
-    }
-    /// <summary>
     /// FacilityDataBase内のリストから引数をインデックスとしてデータを返す
     /// </summary>
     public Facility GetFacilityData(int index)

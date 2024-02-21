@@ -18,12 +18,4 @@ public class DragDetector : MonoBehaviour
     {
         _buildingManager.IsDragging = false;
     }
-    void OnTriggerEnter(Collider other)
-    {
-        _buildingManager.IsPlacable = false;
-    }
-    void OnTriggerExit(Collider other)
-    {
-        _buildingManager.IsPlacable = true;
-    }
 }
