@@ -22,16 +22,10 @@ public class SoldierTrainingSchoolFunction : MonoBehaviour, IPointerClickHandler
     /// 生成上限を決める施設の種類(キャンプ)
     /// </summary>
     [SerializeField] FacilityEnum _facilityEnum = FacilityEnum.Camp;
-    /// <summary>
-    /// 施設の数(キャンプ)
-    /// </summary>
-    [SerializeField] int _campCount = 0;
-    /// <summary>
-    /// 兵士の生成上限
-    /// </summary>
-    [SerializeField] int _soldierSpawnLimit;
     DataManager _dataManager;
     ConstructionState _constructionState;
+    int _campCount = 0;
+    int _soldierSpawnLimit;
 
     void Start()
     {

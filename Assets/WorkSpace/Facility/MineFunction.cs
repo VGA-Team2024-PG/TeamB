@@ -33,18 +33,18 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
     {
         if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.Working)
         {
-            _elapsedTime += Time.deltaTime;
-            if (_elapsedTime >= _span)
+            if (_currentGold < _storageLimit)
             {
-                if (_currentGold < _storageLimit)
+                _elapsedTime += Time.deltaTime;
+                if (_elapsedTime >= _span)
                 {
                     _currentGold += _goldIncreaseAmount;
                     _elapsedTime = 0;
                 }
-                else
-                {
-                    _elapsedTime = 0;
-                }
+            }
+            else
+            {
+                _elapsedTime = 0;
             }
         }
 

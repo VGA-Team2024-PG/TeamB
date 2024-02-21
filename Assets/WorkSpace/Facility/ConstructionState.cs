@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Œšİó‘Ô‚ğŠÇ—‚·‚é
+/// </summary>
 public class ConstructionState : MonoBehaviour
 {
     /// <summary>
     /// {İ‚Ìí—Ş
     /// </summary>
     [SerializeField] FacilityEnum _facilityEnum;
-
     /// <summary>
     /// Œ»İ‚ÌŒšİó‘Ô
     /// </summary>
@@ -32,7 +32,7 @@ public class ConstructionState : MonoBehaviour
     {
         if (_currentState == FacilityState.Constructing)
         {
-            _elapsedTime = Time.deltaTime;
+            _elapsedTime += Time.deltaTime;
             if (_elapsedTime >= _workTime)
             {
                 _currentState = FacilityState.Working;
