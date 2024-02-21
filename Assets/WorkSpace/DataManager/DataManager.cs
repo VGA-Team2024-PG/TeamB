@@ -27,6 +27,14 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        for (int i = 0;  i < _facilitydata.FacilityData.Count; i++)
+        {
+            _facilitystock[i] = _facilitydata.FacilityData[i].FacilityStock;
+        }
+    }
+
     public int Gold
     {
         get => _gold;
@@ -50,6 +58,7 @@ public class DataManager : MonoBehaviour
     }
 
     public int[] FacilityCount => _facilitycount;
+    public int[] Facilitystock => _facilitystock;
 
     public void ChangeGold(int value)
     {
@@ -63,10 +72,19 @@ public class DataManager : MonoBehaviour
 
     public void AddFacility(FacilityEnum facilityEnum)
     {
-        _facilitystock[(int)facilityEnum]++;
+        _facilitycount[(int)facilityEnum]++;
     }
 
-    
+    /// <summary>
+    /// ストックを減らす処理
+    /// </summary>
+    /// <param name="facilityEnum"></param>
+    public void DecreaseFacilityStock(FacilityEnum facilityEnum)
+    {
+        _facilitystock[(int)facilityEnum]--;
+    }
+
+
     /// <summary>
     /// FacilityDataBase内のリストから引数をインデックスとしてデータを返す
     /// </summary>
