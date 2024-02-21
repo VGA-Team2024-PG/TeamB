@@ -1,29 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 建設状態を管理する
+/// </summary>
 public class ConstructionState : MonoBehaviour
 {
-    [SerializeField, Tooltip("現在の建設状態")] FacilityState _currentState = FacilityState.NotInstalled;
-
-    // このオブジェクトの施設の種類(データを取得してくる)
+    /// <summary>
+    /// 施設の種類
+    /// </summary>
+    [SerializeField] FacilityEnum _facilityEnum;
+    /// <summary>
+    /// 現在の建設状態
+    /// </summary>
+    [SerializeField] FacilityState _currentState = FacilityState.NotInstalled;
+    /// <summary>
+    /// 建設に必要な施工時間
+    /// </summary>
+    [SerializeField] float _workTime = 0;
+    DataManager _dataManager;
     Facility _facilityType;
-    // 施設の建設に必要な施工時間(データを取得してくる)
-    float _workTime = 0;
-    // 建設経過時間
     float _elapsedTime = 0;
 
     void Start()
     {
-
+        _dataManager = DataManager.Instance;
+        _facilityType = _dataManager.GetFacilitydata((int)_facilityEnum);
+        _workTime = _facilityType.WorkTime;
     }
 
     void Update()
     {
         if (_currentState == FacilityState.Constructing)
         {
-            _elapsedTime = Time.deltaTime;
-            if (_elapsedTime > _workTime)
+            _elapsedTime += Time.deltaTime;
+            if (_elapsedTime >= _workTime)
             {
                 _currentState = FacilityState.Working;
             }
