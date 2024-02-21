@@ -10,6 +10,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] FacilityDataBase _facilitydata;
     [SerializeField] TMP_Text _goldText;
     [SerializeField] TMP_Text _resourceText;
+    [SerializeField] TMP_Text _enemyresourceText;
     private int _gold;
     private int _resource;
     private int _enemyresource;
@@ -33,6 +34,7 @@ public class DataManager : MonoBehaviour
 
         Onchangegold += n => _goldText.text = n.ToString();
         Onchangeresource += n => _resourceText.text = n.ToString();
+        Onchangeenemyresource += n => _enemyresourceText.text = n.ToString();
     }
 
     private void Start()
