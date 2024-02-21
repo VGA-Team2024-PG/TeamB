@@ -50,6 +50,10 @@ public class DataManager : MonoBehaviour
         private set
         {
             _gold = value;
+            if (_gold < 0)
+            {
+                _gold = 0;
+            }
             Onchangegold?.Invoke(_gold);
         }
     }
