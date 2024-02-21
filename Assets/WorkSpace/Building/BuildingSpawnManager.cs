@@ -5,6 +5,10 @@ using UnityEngine;
 public class BuildingSpawnManager : MonoBehaviour
 {
     /// <summary>
+    /// 建築時にゴールドを支払うか
+    /// </summary>
+    [SerializeField] bool _isPayGold = false;
+    /// <summary>
     /// 建築中か区別するbool
     /// </summary>
     bool _isBuilding = false;
@@ -54,16 +58,16 @@ public class BuildingSpawnManager : MonoBehaviour
             //ここで現在持っているリソース量を確認する
             _priceBuildingFacilityObj = _buildingFacility.Price;
             //施工に必要な金額を持っているなら施設を生成する
-            //if ( >= _priceBuildingFacilityObj)
+            if (_dataManager.Gold >= _priceBuildingFacilityObj || !_isPayGold)
             {
                 _UIManager.ChangeUIBuilding();
                 _buildingFacilityObj = Instantiate(_buildingFacility.Prefab, _spawnPos.transform.position, Quaternion.identity);
                 _isBuilding = true;
             }
-            //else
-            //{
-            //    Debug.Log("施設を建築するための施工費が不足しています");
-            //}
+            else
+            {
+                Debug.Log("施設を建築するための施工費が不足しています");
+            }
         }
         else
         {
@@ -83,9 +87,13 @@ public class BuildingSpawnManager : MonoBehaviour
             _dataManager.DecreaseFacilityStock(_buildingFacility.FacilityEnum);
             Destroy(_buildingFacilityObj.GetComponentInChildren<FacilityMover>());
             //ここで施工金額を現在のゴールドから減らす
-            //ゴールドを変動させる関数(_priceBuildingFacilityObj);
+            if(!_isPayGold)
+            {
+                _dataManager.ChangeGold(-_priceBuildingFacilityObj);
+            }
             //プレハブの遷移をするメソッドを呼ぶ
-            //_buildingFacilityObj.SendMessage
+            //_buildingFacilityObj.SendMessage("StartConstruction");
+            //_buildingFacilityObj.GetComponentInChildren<ConstructionState>().StartConstruction();
             _UIManager.ChangeUINormal();
         }
         else
