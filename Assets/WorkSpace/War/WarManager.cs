@@ -1,12 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 public class WarManager : MonoBehaviour
 {
     static WarManager _instance;
     public static WarManager Instance { get => _instance; }
+
+    public event Action OnWin;
+    public event Action OnDefeat;
+
     private void Awake()
     {
         if (_instance)
@@ -18,6 +20,9 @@ public class WarManager : MonoBehaviour
         {
             _instance = this;
         }
+
+        OnWin += Win;
+        OnDefeat += Defeat;
     }
     // Start is called before the first frame update
     void Start()
@@ -35,13 +40,23 @@ public class WarManager : MonoBehaviour
     {
         if (DataManager.Instance.Resource > DataManager.Instance.EnemyResource)
         {
-            DataManager.Instance.ChangeResource(-(DataManager.Instance.EnemyResource / 2));
-            DataManager.Instance.ChangeEnemyResource(1);
+            OnWin?.Invoke();
         }
         else
         {
-            DataManager.Instance.ChangeGold(-10 * (DataManager.Instance.EnemyResource - DataManager.Instance.Resource));
-            DataManager.Instance.ChangeResource(-DataManager.Instance.Resource);
+            OnDefeat?.Invoke();
         }
+    }
+
+    public void Win()
+    {
+        DataManager.Instance.ChangeResource(-(DataManager.Instance.EnemyResource / 2));
+        DataManager.Instance.ChangeEnemyResource(1);
+    }
+
+    public void Defeat()
+    {
+        DataManager.Instance.ChangeGold(-10 * (DataManager.Instance.EnemyResource - DataManager.Instance.Resource));
+        DataManager.Instance.ChangeResource(-DataManager.Instance.Resource);
     }
 }
