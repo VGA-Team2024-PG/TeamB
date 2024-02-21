@@ -51,12 +51,12 @@ public class DataManager : MonoBehaviour
 
     public int[] FacilityCount => _facilitycount;
 
-    public void ChangeGold(int value)//ゴールドを増やす
+    public void ChangeGold(int value)
     {
         Gold += value;
     }
 
-    public void ChangeResource(int value)//兵力を増やす
+    public void ChangeResource(int value)
     {
         Resource += value;
     }
@@ -66,22 +66,7 @@ public class DataManager : MonoBehaviour
         _facilitystock[(int)facilityEnum]++;
     }
 
-    /// <summary>
-    /// FacilityDataBase内のリストから与えられたenumを持つ施設データを返す/存在しない場合nullを返す
-    /// </summary>
-    /// <param name="facilityEnum">探したいenum</param>
-    /// <returns></returns>
-    public Facility Searchfacility(FacilityEnum facilityEnum)
-    {
-        foreach (Facility facility in _facilitydata.FacilityData)
-        {
-            if (facility.FacilityEnum == facilityEnum)
-            {
-                return facility;
-            }
-        }
-        return null;
-    }
+    
     /// <summary>
     /// FacilityDataBase内のリストから引数をインデックスとしてデータを返す
     /// </summary>
