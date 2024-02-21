@@ -53,8 +53,15 @@ public class SoldierTrainingSchoolFunction : MonoBehaviour, IPointerClickHandler
                 {
                     _dataManager.ChangeGold(-_price);
                     // 生成位置変更予定
-                    Instantiate(_soldierPrefab, this.transform.position, Quaternion.identity);
-                    _dataManager.ChangeResource(_addResource);
+                    if (_soldierPrefab != null)
+                    {
+                        Instantiate(_soldierPrefab, this.transform.position, Quaternion.identity);
+                        _dataManager.ChangeResource(_addResource);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("兵士のプレハブがありません");
+                    }
                 }
                 else
                 {
