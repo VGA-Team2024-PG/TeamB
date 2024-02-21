@@ -31,13 +31,13 @@ public class SoldierTrainingSchoolFunction : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         // 建設状態が稼働中になったら
-        if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.InOperation)
+        if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.Working)
         {
             if (_dataManager.Gold > _price)
             {
                 //if (兵士の作成上限数に達していなければ)
                 {
-                    _dataManager.ChangeGold(_price);
+                    _dataManager.ChangeGold(-_price);
                     Instantiate(_soldierPrefab, this.transform.position, Quaternion.identity);
 
                     _dataManager.ChangeResource(_addResource);
