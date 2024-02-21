@@ -6,8 +6,11 @@ public class DataManager : MonoBehaviour
     static DataManager _instance;
     public static DataManager Instance { get => _instance; }
 
+    [SerializeField] FacilityDataBase _facilitydata;
     private int _gold;
     private int _resource;
+    private int[] _facilitycount = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
+    private int[] _facilitystock = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
     public event Action<int> Onchangegold;
     public event Action<int> Onchangeresource;
 
@@ -46,6 +49,8 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public int[] FacilityCount => _facilitycount;
+
     public void ChangeGold(int value)//ゴールドを増やす
     {
         Gold += value;
@@ -54,5 +59,34 @@ public class DataManager : MonoBehaviour
     public void ChangeResource(int value)//兵力を増やす
     {
         Resource += value;
+    }
+
+    public void AddFacility(FacilityEnum facilityEnum)
+    {
+        _facilitystock[(int)facilityEnum]++;
+    }
+
+    /// <summary>
+    /// FacilityDataBase内のリストから与えられたenumを持つ施設データを返す/存在しない場合nullを返す
+    /// </summary>
+    /// <param name="facilityEnum">探したいenum</param>
+    /// <returns></returns>
+    public Facility Searchfacility(FacilityEnum facilityEnum)
+    {
+        foreach (Facility facility in _facilitydata.FacilityData)
+        {
+            if (facility.FacilityEnum == facilityEnum)
+            {
+                return facility;
+            }
+        }
+        return null;
+    }
+    /// <summary>
+    /// FacilityDataBase内のリストから引数をインデックスとしてデータを返す
+    /// </summary>
+    public Facility GetFacilitydata(int index)
+    {
+        return _facilitydata.FacilityData[index];
     }
 }
