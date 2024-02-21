@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
@@ -7,6 +8,8 @@ public class DataManager : MonoBehaviour
     public static DataManager Instance { get => _instance; }
 
     [SerializeField] FacilityDataBase _facilitydata;
+    [SerializeField] TMP_Text _goldText;
+    [SerializeField] TMP_Text _resourceText;
     private int _gold;
     private int _resource;
     private int[] _facilitycount = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
@@ -25,6 +28,9 @@ public class DataManager : MonoBehaviour
         {
             _instance = this;
         }
+
+        Onchangegold += n => _goldText.text = n.ToString();
+        Onchangeresource += n => _resourceText.text = n.ToString();
     }
 
     private void Start()
