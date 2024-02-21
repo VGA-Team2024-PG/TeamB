@@ -12,10 +12,12 @@ public class DataManager : MonoBehaviour
     [SerializeField] TMP_Text _resourceText;
     private int _gold;
     private int _resource;
+    private int _enemyresource;
     private int[] _facilitycount = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
     private int[] _facilitystock = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
     public event Action<int> Onchangegold;
     public event Action<int> Onchangeresource;
+    public event Action<int> Onchangeenemyresource;
 
     private void Awake()
     {
@@ -63,6 +65,17 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public int EnemyResource
+    {
+        get => _enemyresource;
+
+        private set
+        {
+            _enemyresource = value;
+            Onchangeenemyresource?.Invoke(_enemyresource);
+        }
+    }
+
     public int[] FacilityCount => _facilitycount;
     public int[] Facilitystock => _facilitystock;
 
@@ -74,6 +87,11 @@ public class DataManager : MonoBehaviour
     public void ChangeResource(int value)
     {
         Resource += value;
+    }
+
+    public void ChangeEnemyResource(int value)
+    {
+        EnemyResource += value;
     }
 
     public void AddFacility(FacilityEnum facilityEnum)
