@@ -16,5 +16,5 @@ MonoBehaviour:
   _name: "\u9271\u5C71"
   _price: 1000
   _facilityStock: 10
-  _workTime: 300
+  _workTime: 10
   _prefab: {fileID: 3086361658578671447, guid: b4153532bd288c942aade6eef56694d6, type: 3}

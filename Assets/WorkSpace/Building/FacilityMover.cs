@@ -1,6 +1,6 @@
 using UnityEngine;
 /// <summary>
-/// <para>建築中にオブジェクトの状態を伝達する</para>
+/// <para>建築中に施設を動かす</para>
 /// 施設のプレハブにアタッチする
 /// </summary>
 public class FacilityMover : MonoBehaviour
@@ -12,18 +12,12 @@ public class FacilityMover : MonoBehaviour
     BuildingSpawnManager _buildingSpawnManager;
     Vector3 _diffFromParent;
     GameObject _parent;
-    RaycastHit _hit;
     void Start()
     {
         _parent = transform.parent.gameObject;
         _diffFromParent = transform.localPosition;
         _diffFromParent.y = 0;
-        _buildingSpawnManager = FindObjectOfType<BuildingSpawnManager>();
-    }
-    private void Update()
-    {
-        //debug用
-        Physics.BoxCast(transform.position + Vector3.up * 10, _castBoxSize / 2, -transform.up, out _hit, Quaternion.identity, _buildingSpawnManager._maxRayDistance, LayerMask.GetMask("Facility"));
+        _buildingSpawnManager = BuildingSpawnManager.Instance;
     }
     /// <summary>
     /// 設置中の施設をドラッグしているかを確認して、動かす
@@ -38,9 +32,12 @@ public class FacilityMover : MonoBehaviour
             _parent.transform.position = hit.point - _diffFromParent;
         }
     }
+    /// <summary>
+    /// ボックスキャストを行い施設が設置可能かを判断する
+    /// </summary>
     void OnMouseUp()
     {
-        if (!Physics.BoxCast(transform.position + Vector3.up * 10, _castBoxSize / 2, -transform.up, out _hit,  Quaternion.identity, _buildingSpawnManager._maxRayDistance, LayerMask.GetMask("Facility")))
+        if (!Physics.BoxCast(transform.position + Vector3.up * 10, _castBoxSize / 2, -transform.up,  Quaternion.identity, _buildingSpawnManager._maxRayDistance, LayerMask.GetMask("Facility")))
         {
             _buildingSpawnManager.IsPlacable = true;
         }
@@ -51,11 +48,7 @@ public class FacilityMover : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, _castBoxSize);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(_hit.point, _castBoxSize);
-        Gizmos.color = Color.black;
-        Gizmos.DrawSphere(transform.position, 0.1f);
+        Gizmos.DrawWireCube(transform.position, _castBoxSize);
     }
 }

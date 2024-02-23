@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 990897095914755251}
   m_Layer: 0
-  m_Name: TestMine
+  m_Name: Mine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,6 +45,8 @@ GameObject:
   - component: {fileID: 4644937121553968528}
   - component: {fileID: 4524611031439366319}
   - component: {fileID: 6166325644247509108}
+  - component: {fileID: 5205207024052746388}
+  - component: {fileID: 7123063841533536652}
   m_Layer: 0
   m_Name: Object
   m_TagString: Untagged
@@ -142,3 +144,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aa2891965c3194bb24414069540147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _castBoxSize: {x: 1, y: 1, z: 1}
+--- !u!114 &5205207024052746388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3214845585727530432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8831d09429ffbbb428846311aec71c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _facilityEnum: 2
+  _currentState: 0
+  _workTime: 0
+--- !u!114 &7123063841533536652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3214845585727530432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60335b4e3148c9642955d52d5d386dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _span: 1
+  _goldIncreaseAmount: 10
+  _storageLimit: 1000

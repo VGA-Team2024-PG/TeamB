@@ -7,7 +7,8 @@ using UnityEngine.UI;
 /// </summary>
 public class UIBuildingContentSetter : MonoBehaviour
 {
-
+    static UIBuildingContentSetter _instance;
+    public static UIBuildingContentSetter Instance => _instance;
     /// <summary>
     /// ScrollView内のボタンを表示するcontent
     /// </summary>
@@ -17,9 +18,21 @@ public class UIBuildingContentSetter : MonoBehaviour
     /// </summary>
     [SerializeField] GameObject _buttonPrefab;
     DataManager _dataManager;
+    private void Awake()
+    {
+        if(_instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
     void Start()
     {
-        _dataManager = FindObjectOfType<DataManager>();
+        _dataManager = DataManager.Instance;
     }
     /// <summary>
     /// ボタンの並びを直す

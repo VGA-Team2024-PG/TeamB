@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2746592171729651078}
   - component: {fileID: 8236468513873135943}
   - component: {fileID: 3902856515167766090}
+  - component: {fileID: 3491565331187648036}
+  - component: {fileID: 6001325840853486264}
   m_Layer: 0
   m_Name: Object
   m_TagString: Untagged
@@ -110,6 +112,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aa2891965c3194bb24414069540147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _castBoxSize: {x: 1, y: 1, z: 1}
+--- !u!114 &3491565331187648036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4787586844847642241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8831d09429ffbbb428846311aec71c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _facilityEnum: 1
+  _currentState: 0
+  _workTime: 0
+--- !u!114 &6001325840853486264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4787586844847642241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ea1df6bb68675b478533507e8c584af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _price: 100
+  _soldierPrefab: {fileID: 0}
+  _addResource: 1
+  _facilityEnum: 0
 --- !u!1 &7172196803736618328
 GameObject:
   m_ObjectHideFlags: 0
