@@ -11,14 +11,17 @@ public class DataManager : MonoBehaviour
     [SerializeField] TMP_Text _goldText;
     [SerializeField] TMP_Text _resourceText;
     [SerializeField] TMP_Text _enemyresourceText;
+    [SerializeField] TMP_Text _factoryworkerText;
     private int _gold;
     private int _resource;
     private int _enemyresource;
+    private int _factoryworker;
     private int[] _facilitycount = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
     private int[] _facilitystock = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
     public event Action<int> Onchangegold;
     public event Action<int> Onchangeresource;
     public event Action<int> Onchangeenemyresource;
+    public event Action<int> Onchangefactoryworker;
 
     private void Awake()
     {
@@ -35,6 +38,7 @@ public class DataManager : MonoBehaviour
         Onchangegold += n => _goldText.text = n.ToString();
         Onchangeresource += n => _resourceText.text = n.ToString();
         Onchangeenemyresource += n => _enemyresourceText.text = n.ToString();
+        Onchangefactoryworker += n => _factoryworkerText.text = n.ToString();
     }
 
     private void Start()
@@ -82,6 +86,17 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public int FactoryWorker
+    {
+        get => _factoryworker;
+
+        private set
+        {
+            _factoryworker = value;
+            Onchangefactoryworker?.Invoke(_factoryworker);
+        }
+    }
+
     public int[] FacilityCount => _facilitycount;
     public int[] Facilitystock => _facilitystock;
 
@@ -98,6 +113,11 @@ public class DataManager : MonoBehaviour
     public void ChangeEnemyResource(int value)
     {
         EnemyResource += value;
+    }
+
+    public void ChangeFactoryWorker(int value)
+    {
+        FactoryWorker += value;
     }
 
     public void AddFacility(FacilityEnum facilityEnum)
