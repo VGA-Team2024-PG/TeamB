@@ -15,8 +15,8 @@ public class ButtonActionSetter : MonoBehaviour
     public Facility Facility { set {  _facility = value; } }
     void Awake()
     {
-        _dataManager = FindObjectOfType<DataManager>();
-        _buildingSpawnManager = FindObjectOfType<BuildingSpawnManager>();
+        _dataManager = DataManager.Instance;
+        _buildingSpawnManager = BuildingSpawnManager.Instance;
     }
     void Start()
     {

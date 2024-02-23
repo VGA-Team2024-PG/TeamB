@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 /// <summary>
-/// <para>建築タブのアクティブを切り替える</para>
-/// メインキャンバスの建築ボタンにアタッチする
+/// <para>ゲーム画面内のUIを切り替える</para>
 /// </summary>
-public class UIManager : MonoBehaviour
+public class UIStateChanger : MonoBehaviour
 {
     /// <summary>
     /// 通常時のUI
@@ -19,17 +17,19 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject _facilityListUI;
     bool _isChoiceFacilityUI = false;
     /// <summary>
-    /// 建築する位置を決めているときのUI
+    /// 建築物の位置を決めているときのUI
     /// </summary>
     [SerializeField] GameObject _buildingUI;
     UIBuildingContentSetter _buildingContentSetter;
+    DataManager _dataManager;
     void Start()
     {
-        _buildingContentSetter = FindObjectOfType<UIBuildingContentSetter>();
+        _dataManager = DataManager.Instance;
+        _buildingContentSetter = UIBuildingContentSetter.Instance;
         ChangeUINormal();        
     }
     /// <summary>
-    /// 通常画面へ偏移
+    /// 通常画面へ推移
     /// </summary>
     public void ChangeUINormal()
     {
@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
         }
     }
     /// <summary>
-    /// 建築位置の選択中の画面へ偏移
+    /// 建築位置の選択中の画面へ推移
     /// </summary>
     public void ChangeUIBuilding()
     {

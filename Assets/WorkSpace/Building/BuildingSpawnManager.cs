@@ -1,13 +1,17 @@
+using Unity.VisualScripting;
 using UnityEngine;
 /// <summary>
 /// <para>施設を建築中に管理する</para>
 /// </summary>
 public class BuildingSpawnManager : MonoBehaviour
 {
+    static BuildingSpawnManager _instance;
+    public static BuildingSpawnManager Instance => _instance;
     /// <summary>
     /// 建築時にゴールドを支払うか
     /// </summary>
     [SerializeField] bool _isPayGold = false;
+    [SerializeField] bool _useWorker = false;
     /// <summary>
     /// 建築中か区別するbool
     /// </summary>
@@ -36,12 +40,23 @@ public class BuildingSpawnManager : MonoBehaviour
     int _priceBuildingFacilityObj;
     Facility _buildingFacility;
     DataManager _dataManager;
-    UIManager _UIManager;
-    RaycastHit _debugHit;
+    UIStateChanger _UIManager;
+    private void Awake()
+    {
+        if (_instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
     void Start()
     {
-        _UIManager = FindObjectOfType<UIManager>();
-        _dataManager = FindObjectOfType<DataManager>();
+        _UIManager = FindObjectOfType<UIStateChanger>();
+        _dataManager = DataManager.Instance;
     }
     /// <summary>
     /// 施設の設置を開始する関数
@@ -49,29 +64,37 @@ public class BuildingSpawnManager : MonoBehaviour
     /// <param name="facilityId">建築する建物のenum</param>
     public void BuildStart(FacilityEnum facilityEnum)
     {
-        //生成する施設のデータを取得
-        _buildingFacility = _dataManager.GetFacilitydata((int)facilityEnum);
-        _buildingFacilityObj = _buildingFacility.Prefab;
-        //ストック残数の確認
-        if (_dataManager.Facilitystock[(int)facilityEnum] > 0)
+        //建築可能な工員がいるか確認
+        if(!_useWorker)//&& DataManager.Instance. > 0)
         {
-            //ここで現在持っているリソース量を確認する
-            _priceBuildingFacilityObj = _buildingFacility.Price;
-            //施工に必要な金額を持っているなら施設を生成する
-            if (_dataManager.Gold >= _priceBuildingFacilityObj || !_isPayGold)
+            //生成する施設のデータを取得
+            _buildingFacility = _dataManager.GetFacilitydata((int)facilityEnum);
+            _buildingFacilityObj = _buildingFacility.Prefab;
+            //ストック残数の確認
+            if (_dataManager.Facilitystock[(int)facilityEnum] > 0)
             {
-                _UIManager.ChangeUIBuilding();
-                _buildingFacilityObj = Instantiate(_buildingFacility.Prefab, _spawnPos.transform.position, Quaternion.identity);
-                _isBuilding = true;
+                //ここで現在持っているリソース量を確認する
+                _priceBuildingFacilityObj = _buildingFacility.Price;
+                //施工に必要な金額を持っているなら施設を生成する
+                if (!_isPayGold || _dataManager.Gold >= _priceBuildingFacilityObj)
+                {
+                    _UIManager.ChangeUIBuilding();
+                    _buildingFacilityObj = Instantiate(_buildingFacility.Prefab, _spawnPos.transform.position, Quaternion.identity);
+                    _isBuilding = true;
+                }
+                else
+                {
+                    Debug.Log("施設を建築するための施工費が不足しています");
+                }
             }
             else
             {
-                Debug.Log("施設を建築するための施工費が不足しています");
+                Debug.Log("施設の最大設置可能数を超えています");
             }
         }
         else
         {
-            Debug.Log("施設の最大設置可能数を超えています");
+            Debug.Log("全ての工員が建築中です");
         }
     }
     /// <summary>
@@ -91,9 +114,12 @@ public class BuildingSpawnManager : MonoBehaviour
             {
                 _dataManager.ChangeGold(-_priceBuildingFacilityObj);
             }
-            //プレハブの遷移をするメソッドを呼ぶ
-            //_buildingFacilityObj.SendMessage("StartConstruction");
-            //_buildingFacilityObj.GetComponentInChildren<ConstructionState>().StartConstruction();
+            if(!_useWorker)
+            {
+                //_dataManager.Instance.
+            }
+            //施設の状態を推移するメソッドを呼ぶ
+            _buildingFacilityObj.GetComponentInChildren<ConstructionState>().StartConstruction();
             _UIManager.ChangeUINormal();
         }
         else
