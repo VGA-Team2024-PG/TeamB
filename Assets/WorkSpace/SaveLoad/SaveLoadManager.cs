@@ -11,18 +11,14 @@ public class SaveLoadManager : MonoBehaviour
     /// <summary> データをセーブするファイルのパス </summary>
     private string _saveDataFilePath;
 
-    private void Awake()
-    {
-        _initialData = GetInitialData();
-    }
-
     /// <summary> ゲーム起動時にゲームデータを取得する </summary>
-    SaveGameData GetInitialData()
+    public SaveGameData GetInitialData()
     {
         _saveDataFilePath = Application.dataPath + "/SaveGameDataJson.json";
         
         if (!File.Exists(_saveDataFilePath)) // ファイルが存在していなかったら初期状態をセーブする
         {
+            _initialData._facilityStock = DataManager.Instance.Facilitystock;
             SaveData(_initialData);
         }
 
@@ -62,13 +58,17 @@ public class SaveGameData
     public int _gold;
     public int _resource;
     public int _enemyResource;
+    public int[] _facilityCount;
+    public int[] _facilityStock;
     public FacilitySaveData[] _facilitySaveDatas;
 
-    public SaveGameData(int gold, int resource, int enemyResource, FacilitySaveData[] facilitySaveDatas)
+    public SaveGameData(int gold, int resource, int enemyResource, int[] facilityCount, int[] facilityStock, FacilitySaveData[] facilitySaveDatas)
     {
         _gold = gold;
         _resource = resource;
         _enemyResource = enemyResource;
+        _facilityCount = facilityCount;
+        _facilityStock = facilityStock;
         _facilitySaveDatas = facilitySaveDatas;
     }
 }
@@ -81,13 +81,22 @@ public class FacilitySaveData
 {
     public FacilityEnum FacilityEnum;
     /// <summary> 施設のポジション </summary>
-    public Vector3 Position = Vector3.zero;
-    public ConstructionState.FacilityState FacilityState = ConstructionState.FacilityState.NotInstalled;
+    public Vector3 Position;
+    public FacilityState FacilityState = FacilityState.NotInstalled;
     public float BuildingTime = 0;
     public int MineStorage = 0;
 
-    public FacilitySaveData(FacilityEnum facilityEnum)
+    public FacilitySaveData(FacilityEnum facilityEnum, Vector3 pos, FacilityState state, float buildingTime)
     {
         FacilityEnum = facilityEnum;
+        Position = pos;
+        FacilityState = state;
+        BuildingTime = buildingTime;
+    }
+
+    public FacilitySaveData(FacilityEnum fEnum, Vector3 pos)
+    {
+        FacilityEnum = fEnum;
+        Position = pos;
     }
 }

@@ -45,7 +45,7 @@ public class SoldierTrainingSchoolFunction : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.Working)
+        if (_constructionState.GetFacilityState() == FacilityState.Working)
         {
             if (_dataManager.Gold >= _price)
             {

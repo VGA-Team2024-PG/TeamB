@@ -65,7 +65,7 @@ public class BuildingSpawnManager : MonoBehaviour
     public void BuildStart(FacilityEnum facilityEnum)
     {
         //建築可能な工員がいるか確認
-        if(!_useWorker)//&& DataManager.Instance. > 0)
+        if(!_useWorker || DataManager.Instance.FactoryWorker > 0)
         {
             //生成する施設のデータを取得
             _buildingFacility = _dataManager.GetFacilitydata((int)facilityEnum);
@@ -79,7 +79,9 @@ public class BuildingSpawnManager : MonoBehaviour
                 if (!_isPayGold || _dataManager.Gold >= _priceBuildingFacilityObj)
                 {
                     _UIManager.ChangeUIBuilding();
-                    _buildingFacilityObj = Instantiate(_buildingFacility.Prefab, _spawnPos.transform.position, Quaternion.identity);
+                    _buildingFacilityObj = Instantiate(_buildingFacility.Prefab);
+                    _buildingFacilityObj.GetComponent<ConstructionState>()
+                        .InitializeFacilityData(new FacilitySaveData(_buildingFacility.FacilityEnum, _spawnPos.transform.position));
                     _isBuilding = true;
                 }
                 else
@@ -102,7 +104,7 @@ public class BuildingSpawnManager : MonoBehaviour
     /// </summary>
     public void FinishBuilding()
     {
-        if (_isBuilding && _isPlacable)
+        if (_isBuilding && _isPlacable && _dataManager.FactoryWorker > 0)
         {
             _isBuilding = false;
             _buildingFacilityObj.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Facility");
@@ -116,7 +118,7 @@ public class BuildingSpawnManager : MonoBehaviour
             }
             if(!_useWorker)
             {
-                //_dataManager.Instance.
+                _dataManager.ChangeFactoryWorker(-1);
             }
             //施設の状態を推移するメソッドを呼ぶ
             _buildingFacilityObj.GetComponentInChildren<ConstructionState>().StartConstruction();
@@ -124,7 +126,7 @@ public class BuildingSpawnManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("オブジェクトが重なっています");
+            Debug.Log("オブジェクトが重なっている、または工員が足りない");
         }
     }
     /// <summary>

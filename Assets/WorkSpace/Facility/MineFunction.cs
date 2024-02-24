@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 /// <summary>
@@ -22,6 +23,17 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
     ConstructionState _constructionState;
     float _elapsedTime = 0;
     int _currentGold = 0;
+    private event Action<int> OnChangedGold; 
+
+    public int CurrentGold
+    {
+        get => _currentGold;
+        set
+        {
+            _currentGold = value;
+            OnChangedGold?.Invoke(_currentGold);
+        }
+    }
 
     void Start()
     {
@@ -31,14 +43,14 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
 
     void Update()
     {
-        if (_constructionState.GetFacilityState() == ConstructionState.FacilityState.Working)
+        if (_constructionState.GetFacilityState() == FacilityState.Working)
         {
-            if (_currentGold < _storageLimit)
+            if (CurrentGold < _storageLimit)
             {
                 _elapsedTime += Time.deltaTime;
                 if (_elapsedTime >= _span)
                 {
-                    _currentGold += _goldIncreaseAmount;
+                    CurrentGold += _goldIncreaseAmount;
                     _elapsedTime = 0;
                 }
             }
@@ -57,6 +69,6 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         _dataManager.ChangeGold(_currentGold);
-        _currentGold = 0;
+        CurrentGold = 0;
     }
 }

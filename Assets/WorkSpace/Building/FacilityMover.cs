@@ -10,26 +10,30 @@ public class FacilityMover : MonoBehaviour
     /// </summary>
     [SerializeField] Vector3 _castBoxSize = Vector3.one;
     BuildingSpawnManager _buildingSpawnManager;
-    Vector3 _diffFromParent;
-    GameObject _parent;
+    private ConstructionState _constructionState;
+    
     void Start()
     {
-        _parent = transform.parent.gameObject;
-        _diffFromParent = transform.localPosition;
-        _diffFromParent.y = 0;
         _buildingSpawnManager = BuildingSpawnManager.Instance;
+        _constructionState = GetComponent<ConstructionState>();
     }
     /// <summary>
     /// 設置中の施設をドラッグしているかを確認して、動かす
     /// </summary>
     void OnMouseDrag()
     {
+        if (_constructionState.GetFacilityState() != FacilityState.NotInstalled)
+        {
+            Destroy(this);
+            return;
+        }
+        
         Vector3 mousePos = Input.mousePosition;
         Ray ray = RectTransformUtility.ScreenPointToRay(Camera.main, mousePos);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, _buildingSpawnManager._maxRayDistance , LayerMask.GetMask("Floor")))
         {
-            _parent.transform.position = hit.point - _diffFromParent;
+            transform.position = hit.point;
         }
     }
     /// <summary>

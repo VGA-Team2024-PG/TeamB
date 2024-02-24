@@ -1,31 +1,39 @@
 using UnityEngine;
 
 /// <summary>
-/// Œšİó‘Ô‚ğŠÇ—‚·‚é
+/// å»ºè¨­çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹
 /// </summary>
 public class ConstructionState : MonoBehaviour
 {
     /// <summary>
-    /// {İ‚Ìí—Ş
+    /// æ–½è¨­ã®ç¨®é¡
     /// </summary>
     [SerializeField] FacilityEnum _facilityEnum;
     /// <summary>
-    /// Œ»İ‚ÌŒšİó‘Ô
+    /// ç¾åœ¨ã®å»ºè¨­çŠ¶æ…‹
     /// </summary>
     [SerializeField] FacilityState _currentState = FacilityState.NotInstalled;
-    /// <summary>
-    /// Œšİ‚É•K—v‚È{HŠÔ
-    /// </summary>
-    [SerializeField] float _workTime = 0;
-    DataManager _dataManager;
     Facility _facilityType;
     float _elapsedTime = 0;
 
-    void Start()
+    /// <summary> Dataã‹ã‚‰ç‰¹å®šã®çŠ¶æ…‹ã«ã™ã‚‹ </summary>
+    public void InitializeFacilityData(FacilitySaveData facilitySaveData)
     {
-        _dataManager = DataManager.Instance;
-        _facilityType = _dataManager.GetFacilitydata((int)_facilityEnum);
-        _workTime = _facilityType.WorkTime;
+        _facilityType = DataManager.Instance.GetFacilitydata((int)_facilityEnum);
+        transform.position = facilitySaveData.Position;
+        _currentState = facilitySaveData.FacilityState;
+        _elapsedTime = facilitySaveData.BuildingTime;
+        DataManager.Instance.AddFacilityData(this);
+
+        if (_facilityEnum == FacilityEnum.Mine)
+        {
+            GetComponent<MineFunction>().CurrentGold = facilitySaveData.MineStorage;
+        }
+
+        if (_currentState == FacilityState.Constructing)
+        {
+            DataManager.Instance.ChangeFactoryWorker(-1);
+        }
     }
 
     void Update()
@@ -33,16 +41,18 @@ public class ConstructionState : MonoBehaviour
         if (_currentState == FacilityState.Constructing)
         {
             _elapsedTime += Time.deltaTime;
-            if (_elapsedTime >= _workTime)
+            if (_elapsedTime >= _facilityType.WorkTime)
             {
                 _currentState = FacilityState.Working;
+                DataManager.Instance.ChangeFactoryWorker(1);
+                DataManager.Instance.AddFacilityCount(_facilityEnum);
             }
         }
     }
 
     /// <summary>
-    /// {İ‚ÌŒšİó‘Ô‚ğŒšİ’†‚É•Ï‚¦‚é
-    /// BuildingManager‚ÅŒÄ‚Ô
+    /// æ–½è¨­ã®å»ºè¨­çŠ¶æ…‹ã‚’å»ºè¨­ä¸­ã«å¤‰ãˆã‚‹
+    /// BuildingManagerã§å‘¼ã¶
     /// </summary>
     public void StartConstruction()
     {
@@ -50,21 +60,34 @@ public class ConstructionState : MonoBehaviour
     }
 
     /// <summary>
-    /// {İ‚ÌŒšİó‘Ô‚ğŠÇ—‚·‚éenum
-    /// </summary>
-    public enum FacilityState
-    {
-        NotInstalled,   // –¢İ’u
-        Constructing,   // Œš’z’†
-        Working,        // ‰Ò“­’†
-    }
-
-    /// <summary>
-    /// Œ»İ‚Ì{İ‚ÌŒšİó‘Ô‚ğæ“¾‚·‚é‚½‚ß‚ÌŠÖ”
+    /// ç¾åœ¨ã®æ–½è¨­ã®å»ºè¨­çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®é–¢æ•°
     /// </summary>
     /// <returns></returns>
     public FacilityState GetFacilityState()
     {
         return _currentState;
     }
+
+    /// <summary> ç¾åœ¨ã®çŠ¶æ…‹ã‚’ã‚»ãƒ¼ãƒ–å‡ºæ¥ã‚‹å½¢ã«å¤‰ãˆã‚‹ </summary>
+    public FacilitySaveData GetFacilitySaveData()
+    {
+        FacilitySaveData facilitySaveData = new FacilitySaveData(_facilityEnum, transform.position, _currentState, _elapsedTime);
+
+        if (_facilityEnum == FacilityEnum.Mine)
+        {
+            facilitySaveData.MineStorage = GetComponent<MineFunction>().CurrentGold;
+        }
+        
+        return facilitySaveData;
+    }
+}
+
+/// <summary>
+/// æ–½è¨­ã®å»ºè¨­çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹enum
+/// </summary>
+public enum FacilityState
+{
+    NotInstalled,   // æœªè¨­ç½®
+    Constructing,   // å»ºç¯‰ä¸­
+    Working,        // ç¨¼åƒä¸­
 }
