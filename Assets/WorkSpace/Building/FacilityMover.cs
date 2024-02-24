@@ -5,10 +5,10 @@ using UnityEngine;
 /// </summary>
 public class FacilityMover : MonoBehaviour
 {
-    /// <summary>
-    /// 重複判定の大きさ
-    /// </summary>
+    [SerializeField] private Vector3 _castBoxCenter;
     [SerializeField] Vector3 _castBoxSize = Vector3.one;
+    [SerializeField] private LayerMask _castLayerMask;
+    [SerializeField] private LayerMask _floorLayerMask;
     BuildingSpawnManager _buildingSpawnManager;
     private ConstructionState _constructionState;
     
@@ -31,7 +31,7 @@ public class FacilityMover : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         Ray ray = RectTransformUtility.ScreenPointToRay(Camera.main, mousePos);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, _buildingSpawnManager._maxRayDistance , LayerMask.GetMask("Floor")))
+        if (Physics.Raycast(ray, out hit, _buildingSpawnManager._maxRayDistance , _floorLayerMask))
         {
             transform.position = hit.point;
         }
@@ -41,18 +41,11 @@ public class FacilityMover : MonoBehaviour
     /// </summary>
     void OnMouseUp()
     {
-        if (!Physics.BoxCast(transform.position + Vector3.up * 10, _castBoxSize / 2, -transform.up,  Quaternion.identity, _buildingSpawnManager._maxRayDistance, LayerMask.GetMask("Facility")))
-        {
-            _buildingSpawnManager.IsPlacable = true;
-        }
-        else
-        {
-            _buildingSpawnManager.IsPlacable = false;
-        }
+        _buildingSpawnManager.IsPlacable = !Physics.CheckBox(_castBoxCenter, _castBoxSize * 0.5f, Quaternion.identity, _castLayerMask);
     }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position, _castBoxSize);
+        Gizmos.DrawWireCube(_castBoxCenter, _castBoxSize);
     }
 }
