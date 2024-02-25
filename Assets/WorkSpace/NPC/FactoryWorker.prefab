@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 3218970081393149249}
   - component: {fileID: 3218970081393149250}
   - component: {fileID: 3218970081393149251}
-  - component: {fileID: 3218970081393149252}
+  - component: {fileID: 3506988223230045279}
   m_Layer: 0
-  m_Name: NPC
+  m_Name: FactoryWorker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,7 +122,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3218970081393149252
+--- !u!114 &3506988223230045279
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,8 +131,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3218970081393149253}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d38d006a3ac6cb94e8370b23190da124, type: 3}
+  m_Script: {fileID: 11500000, guid: 683a814493d4266498d1f5bcccc6ccb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _intervalRange: {x: 10, y: 20}
-  _moveRange: {x: 20, y: 31, z: -20, w: -8.5}
+  _navAgent: {fileID: 3218970081393149251}
+  _randomWalkIntervalRange: {x: 10, y: 20}
+  _radomWalkMoveRange: {x: 20, y: 31.5, z: -20, w: -8.5}
+  _arrivalDistance: 0.5
+  _arrivalDistanceFacility: 3
