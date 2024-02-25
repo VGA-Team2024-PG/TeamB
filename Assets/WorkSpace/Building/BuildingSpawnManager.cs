@@ -8,11 +8,6 @@ public class BuildingSpawnManager : MonoBehaviour
     static BuildingSpawnManager _instance;
     public static BuildingSpawnManager Instance => _instance;
     /// <summary>
-    /// 建築時にゴールドを支払うか
-    /// </summary>
-    [SerializeField] bool _isPayGold = false;
-    [SerializeField] bool _useWorker = false;
-    /// <summary>
     /// 建築中か区別するbool
     /// </summary>
     bool _isBuilding = false;
@@ -39,7 +34,6 @@ public class BuildingSpawnManager : MonoBehaviour
     /// </summary>
     int _priceBuildingFacilityObj;
     Facility _buildingFacility;
-    DataManager _dataManager;
     UIStateChanger _UIManager;
     private void Awake()
     {
@@ -56,7 +50,6 @@ public class BuildingSpawnManager : MonoBehaviour
     void Start()
     {
         _UIManager = FindObjectOfType<UIStateChanger>();
-        _dataManager = DataManager.Instance;
     }
     /// <summary>
     /// 施設の設置を開始する関数
@@ -65,18 +58,18 @@ public class BuildingSpawnManager : MonoBehaviour
     public void BuildStart(FacilityEnum facilityEnum)
     {
         //建築可能な工員がいるか確認
-        if(!_useWorker || DataManager.Instance.FactoryWorker > 0)
+        if(DataManager.Instance.FactoryWorker > 0)
         {
             //生成する施設のデータを取得
-            _buildingFacility = _dataManager.GetFacilitydata((int)facilityEnum);
+            _buildingFacility = DataManager.Instance.GetFacilitydata((int)facilityEnum);
             _buildingFacilityObj = _buildingFacility.Prefab;
             //ストック残数の確認
-            if (_dataManager.Facilitystock[(int)facilityEnum] > 0)
+            if (DataManager.Instance.Facilitystock[(int)facilityEnum] > 0)
             {
                 //ここで現在持っているリソース量を確認する
                 _priceBuildingFacilityObj = _buildingFacility.Price;
                 //施工に必要な金額を持っているなら施設を生成する
-                if (!_isPayGold || _dataManager.Gold >= _priceBuildingFacilityObj)
+                if (DataManager.Instance.Gold >= _priceBuildingFacilityObj)
                 {
                     _UIManager.ChangeUIBuilding();
                     _buildingFacilityObj = Instantiate(_buildingFacility.Prefab);
@@ -104,29 +97,23 @@ public class BuildingSpawnManager : MonoBehaviour
     /// </summary>
     public void FinishBuilding()
     {
-        if (_isBuilding && _isPlacable && _dataManager.FactoryWorker > 0)
+        if (_isBuilding && _isPlacable && DataManager.Instance.FactoryWorker > 0)
         {
             _isBuilding = false;
             _buildingFacilityObj.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Facility");
             _buildingFacilityObj.layer = LayerMask.NameToLayer("Facility");
-            _dataManager.DecreaseFacilityStock(_buildingFacility.FacilityEnum);
+            DataManager.Instance.DecreaseFacilityStock(_buildingFacility.FacilityEnum);
             Destroy(_buildingFacilityObj.GetComponentInChildren<FacilityMover>());
             //ここで施工金額を現在のゴールドから減らす
-            if(!_isPayGold)
-            {
-                _dataManager.ChangeGold(-_priceBuildingFacilityObj);
-            }
-            if(!_useWorker)
-            {
-                _dataManager.ChangeFactoryWorker(-1);
-            }
+            DataManager.Instance.ChangeGold(-_priceBuildingFacilityObj);
+            DataManager.Instance.ChangeFactoryWorker(-1);
             //施設の状態を推移するメソッドを呼ぶ
             _buildingFacilityObj.GetComponentInChildren<ConstructionState>().StartConstruction();
             _UIManager.ChangeUINormal();
         }
         else
         {
-            Debug.Log("オブジェクトが重なっている、または工員が足りない");
+            Debug.Log($"オブジェクトが重なっている、または工員が足りない {DataManager.Instance.FactoryWorker}");
         }
     }
     /// <summary>

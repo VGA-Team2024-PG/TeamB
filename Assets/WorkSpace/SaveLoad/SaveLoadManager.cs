@@ -14,11 +14,21 @@ public class SaveLoadManager : MonoBehaviour
     /// <summary> ゲーム起動時にゲームデータを取得する </summary>
     public SaveGameData GetInitialData()
     {
+        // ファイルパスの初期セット
         _saveDataFilePath = Application.dataPath + "/SaveGameDataJson.json";
         
         if (!File.Exists(_saveDataFilePath)) // ファイルが存在していなかったら初期状態をセーブする
         {
+            _initialData._facilityCount = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
+            // 施設データから初期のストックを取得する
             _initialData._facilityStock = DataManager.Instance.Facilitystock;
+
+            // 現存する施設だけストックを減らす
+            foreach (FacilitySaveData dataFacilitySaveData in _initialData._facilitySaveDatas)
+            {
+                _initialData._facilityStock[(int)dataFacilitySaveData.FacilityEnum]--;
+            }
+            
             SaveData(_initialData);
         }
 

@@ -1,18 +1,16 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 建設状態を管理する
 /// </summary>
 public class ConstructionState : MonoBehaviour
 {
-    /// <summary>
-    /// 施設の種類
-    /// </summary>
-    [SerializeField] FacilityEnum _facilityEnum;
-    /// <summary>
-    /// 現在の建設状態
-    /// </summary>
-    [SerializeField] FacilityState _currentState = FacilityState.NotInstalled;
+    [SerializeField, Tooltip("施設の種類")] FacilityEnum _facilityEnum;
+    [SerializeField, Tooltip("建築経過時間のゲージImage")] private Image _buildingGaugeImage; 
+    
+    /// <summary> 現在の建設状態 </summary>
+    FacilityState _currentState = FacilityState.NotInstalled;
     Facility _facilityType;
     float _elapsedTime = 0;
 
@@ -41,9 +39,12 @@ public class ConstructionState : MonoBehaviour
         if (_currentState == FacilityState.Constructing)
         {
             _elapsedTime += Time.deltaTime;
+            if (_buildingGaugeImage != null) _buildingGaugeImage.fillAmount = _elapsedTime / _facilityType.WorkTime;
+            
             if (_elapsedTime >= _facilityType.WorkTime)
             {
                 _currentState = FacilityState.Working;
+                _buildingGaugeImage.enabled = false;
                 DataManager.Instance.ChangeFactoryWorker(1);
                 DataManager.Instance.AddFacilityCount(_facilityEnum);
             }

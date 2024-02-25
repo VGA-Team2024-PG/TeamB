@@ -22,20 +22,18 @@ public class SoldierTrainingSchoolFunction : MonoBehaviour, IPointerClickHandler
     /// 生成上限を決める施設の種類(キャンプ)
     /// </summary>
     [SerializeField] FacilityEnum _facilityEnum = FacilityEnum.Camp;
-    DataManager _dataManager;
     ConstructionState _constructionState;
     int _campCount = 0;
     int _soldierSpawnLimit;
 
     void Start()
     {
-        _dataManager = DataManager.Instance;
         _constructionState = GetComponent<ConstructionState>();
     }
 
     void Update()
     {
-        _campCount = _dataManager.FacilityCount[(int)_facilityEnum];
+        _campCount = DataManager.Instance.FacilityCount[(int)_facilityEnum];
         _soldierSpawnLimit = _campCount * 50;
     }
 
@@ -47,16 +45,16 @@ public class SoldierTrainingSchoolFunction : MonoBehaviour, IPointerClickHandler
     {
         if (_constructionState.GetFacilityState() == FacilityState.Working)
         {
-            if (_dataManager.Gold >= _price)
+            if (DataManager.Instance.Gold >= _price)
             {
-                if (_dataManager.Resource <= _soldierSpawnLimit)
+                if (DataManager.Instance.Resource <= _soldierSpawnLimit)
                 {
-                    _dataManager.ChangeGold(-_price);
+                    DataManager.Instance.ChangeGold(-_price);
                     // 生成位置変更予定
                     if (_soldierPrefab != null)
                     {
                         Instantiate(_soldierPrefab, this.transform.position, Quaternion.identity);
-                        _dataManager.ChangeResource(_addResource);
+                        DataManager.Instance.ChangeResource(_addResource);
                     }
                     else
                     {
