@@ -24,7 +24,6 @@ public class ButtonActionSetter : MonoBehaviour
     }
     public void SetOnClick()
     {
-        Debug.Log(_facility.Name);
         _button.onClick.AddListener(() => _buildingSpawnManager.BuildStart(_facility.FacilityEnum));
     }
     /// <summary>

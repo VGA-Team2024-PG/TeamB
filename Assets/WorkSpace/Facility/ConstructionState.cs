@@ -44,6 +44,7 @@ public class ConstructionState : MonoBehaviour
             if (_elapsedTime >= _facilityType.WorkTime)
             {
                 _currentState = FacilityState.Working;
+                _buildingGaugeImage.enabled = false;
                 DataManager.Instance.ChangeFactoryWorker(1);
                 DataManager.Instance.AddFacilityCount(_facilityEnum);
             }

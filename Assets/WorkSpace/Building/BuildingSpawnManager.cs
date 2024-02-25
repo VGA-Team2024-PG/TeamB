@@ -8,11 +8,6 @@ public class BuildingSpawnManager : MonoBehaviour
     static BuildingSpawnManager _instance;
     public static BuildingSpawnManager Instance => _instance;
     /// <summary>
-    /// 建築時にゴールドを支払うか
-    /// </summary>
-    [SerializeField] bool _isPayGold = false;
-    [SerializeField] bool _useWorker = false;
-    /// <summary>
     /// 建築中か区別するbool
     /// </summary>
     bool _isBuilding = false;
@@ -63,7 +58,7 @@ public class BuildingSpawnManager : MonoBehaviour
     public void BuildStart(FacilityEnum facilityEnum)
     {
         //建築可能な工員がいるか確認
-        if(!_useWorker || DataManager.Instance.FactoryWorker > 0)
+        if(DataManager.Instance.FactoryWorker > 0)
         {
             //生成する施設のデータを取得
             _buildingFacility = DataManager.Instance.GetFacilitydata((int)facilityEnum);
@@ -74,7 +69,7 @@ public class BuildingSpawnManager : MonoBehaviour
                 //ここで現在持っているリソース量を確認する
                 _priceBuildingFacilityObj = _buildingFacility.Price;
                 //施工に必要な金額を持っているなら施設を生成する
-                if (!_isPayGold || DataManager.Instance.Gold >= _priceBuildingFacilityObj)
+                if (DataManager.Instance.Gold >= _priceBuildingFacilityObj)
                 {
                     _UIManager.ChangeUIBuilding();
                     _buildingFacilityObj = Instantiate(_buildingFacility.Prefab);
@@ -110,14 +105,8 @@ public class BuildingSpawnManager : MonoBehaviour
             DataManager.Instance.DecreaseFacilityStock(_buildingFacility.FacilityEnum);
             Destroy(_buildingFacilityObj.GetComponentInChildren<FacilityMover>());
             //ここで施工金額を現在のゴールドから減らす
-            if(!_isPayGold)
-            {
-                DataManager.Instance.ChangeGold(-_priceBuildingFacilityObj);
-            }
-            if(!_useWorker)
-            {
-                DataManager.Instance.ChangeFactoryWorker(-1);
-            }
+            DataManager.Instance.ChangeGold(-_priceBuildingFacilityObj);
+            DataManager.Instance.ChangeFactoryWorker(-1);
             //施設の状態を推移するメソッドを呼ぶ
             _buildingFacilityObj.GetComponentInChildren<ConstructionState>().StartConstruction();
             _UIManager.ChangeUINormal();
