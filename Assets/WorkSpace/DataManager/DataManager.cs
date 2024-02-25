@@ -18,7 +18,8 @@ public class DataManager : MonoBehaviour
     private int _gold;
     private int _resource;
     private int _enemyresource;
-    private int _factoryworker = 1;
+    private int _factoryworkerCount = 1;
+    private FactoryWorkerController _factoryWorker; // 工員が一人限定
     private int[] _facilitycount = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
     private int[] _facilitystock = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
     private List<ConstructionState> _existFacilities = new List<ConstructionState>();
@@ -96,18 +97,24 @@ public class DataManager : MonoBehaviour
 
     public int FactoryWorker
     {
-        get => _factoryworker;
+        get => _factoryworkerCount;
 
         private set
         {
-            _factoryworker = value;
-            Onchangefactoryworker?.Invoke(_factoryworker);
+            _factoryworkerCount = value;
+            Onchangefactoryworker?.Invoke(_factoryworkerCount);
 
-            if (_factoryworker < 0)
+            if (_factoryworkerCount < 0)
             {
                 Debug.Log("工員がマイナス行った");
             }
         }
+    }
+    
+    public FactoryWorkerController FactoryWorkerController
+    {
+        get => _factoryWorker;
+        set => _factoryWorker = value;
     }
 
     public int[] FacilityCount => _facilitycount;
