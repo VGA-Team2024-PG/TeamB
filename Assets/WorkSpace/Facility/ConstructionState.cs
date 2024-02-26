@@ -30,7 +30,7 @@ public class ConstructionState : MonoBehaviour
 
         if (_currentState == FacilityState.Constructing)
         {
-            DataManager.Instance.ChangeFactoryWorker(-1);
+            DataManager.Instance.FactoryWorkerController.SetWork(transform.position);
         }
     }
 
@@ -39,13 +39,13 @@ public class ConstructionState : MonoBehaviour
         if (_currentState == FacilityState.Constructing)
         {
             _elapsedTime += Time.deltaTime;
-            if (_buildingGaugeImage != null) _buildingGaugeImage.fillAmount = _elapsedTime / _facilityType.WorkTime;
+            _buildingGaugeImage.fillAmount = _elapsedTime / _facilityType.WorkTime;
             
             if (_elapsedTime >= _facilityType.WorkTime)
             {
                 _currentState = FacilityState.Working;
                 _buildingGaugeImage.enabled = false;
-                DataManager.Instance.ChangeFactoryWorker(1);
+                DataManager.Instance.FactoryWorkerController.FinishBuildingFacility();
                 DataManager.Instance.AddFacilityCount(_facilityEnum);
             }
         }
@@ -58,6 +58,7 @@ public class ConstructionState : MonoBehaviour
     public void StartConstruction()
     {
         _currentState = FacilityState.Constructing;
+        DataManager.Instance.FactoryWorkerController.SetWork(transform.position);
     }
 
     /// <summary>
