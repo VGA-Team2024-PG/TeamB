@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _navAgent: {fileID: 3218970081393149251}
+  _animator: {fileID: 1360844640412810442}
   _randomWalkIntervalRange: {x: 10, y: 20}
   _radomWalkMoveRange: {x: 20, y: 31.5, z: -20, w: -8.5}
   _arrivalDistance: 0.5
@@ -192,6 +193,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2456161670948204571, guid: e243aeeed827ca24b91e04b280ea0d1e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e243aeeed827ca24b91e04b280ea0d1e, type: 3}
+--- !u!95 &1360844640412810442 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2456161670940902758, guid: e243aeeed827ca24b91e04b280ea0d1e, type: 3}
+  m_PrefabInstance: {fileID: 3527649996563315116}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1360844640422089474 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2456161670948072110, guid: e243aeeed827ca24b91e04b280ea0d1e, type: 3}

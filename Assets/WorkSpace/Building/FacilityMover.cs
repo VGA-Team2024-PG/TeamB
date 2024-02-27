@@ -41,11 +41,11 @@ public class FacilityMover : MonoBehaviour
     /// </summary>
     void OnMouseUp()
     {
-        _buildingSpawnManager.IsPlacable = !Physics.CheckBox(_castBoxCenter, _castBoxSize * 0.5f, Quaternion.identity, _castLayerMask);
+        _buildingSpawnManager.IsPlacable = !Physics.CheckBox(transform.position + _castBoxCenter, _castBoxSize * 0.5f, Quaternion.identity, _castLayerMask);
     }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(_castBoxCenter, _castBoxSize);
+        Gizmos.DrawWireCube(transform.position + _castBoxCenter, _castBoxSize);
     }
 }

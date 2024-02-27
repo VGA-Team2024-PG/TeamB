@@ -59,7 +59,6 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
                 _elapsedTime = 0;
             }
         }
-
     }
 
     /// <summary>
