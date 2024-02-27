@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 910640772438719945}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Parts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 1677328940019108015}
   - component: {fileID: 3769513000488033143}
   - component: {fileID: 407794187620376973}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 769983141985188580}
   - component: {fileID: 2364651872281120677}
   - component: {fileID: 3335492305372931372}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TrainingGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _price: 100
-  _soldierPrefab: {fileID: 0}
+  _soldierPrefab: {fileID: 7107767574367481931, guid: 01d872197885d6a4c8da92608db4b870, type: 3}
   _addResource: 1
   _facilityEnum: 0
 --- !u!208 &3335492305372931372
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 8456665175982003704}
   - component: {fileID: 4633582027976553319}
   - component: {fileID: 7675802627908081775}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1000011178962616, guid: be032db63a48f46408a0261147d94dea, type: 3}
       propertyPath: m_Layer
-      value: 10
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1000011178962616, guid: be032db63a48f46408a0261147d94dea, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -430,7 +430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1000011153640270, guid: 057976f0fba5e924f9ad6ff5058cd5e8, type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4000013830428510, guid: 057976f0fba5e924f9ad6ff5058cd5e8, type: 3}
       propertyPath: m_RootOrder
@@ -541,7 +541,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4444078262658226830, guid: 6102a5adc42b8614dad1bcb620a24031, type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 295239181581302966, guid: 6102a5adc42b8614dad1bcb620a24031, type: 3}
@@ -564,7 +564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1000011178962616, guid: be032db63a48f46408a0261147d94dea, type: 3}
       propertyPath: m_Layer
-      value: 10
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1000011178962616, guid: be032db63a48f46408a0261147d94dea, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -695,7 +695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8968491682987224500, guid: acbe650ebfa8af24d949dd10d9914444, type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9116163850410823940, guid: acbe650ebfa8af24d949dd10d9914444, type: 3}
       propertyPath: m_Convex
