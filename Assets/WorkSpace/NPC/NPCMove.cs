@@ -6,10 +6,11 @@ using Random = UnityEngine.Random;
 /// <summary>
 /// NavMeshでNPCの動きを管理する
 /// </summary>
-public abstract class NPCMove : MonoBehaviour
+public class NPCMove : MonoBehaviour
 {
     [Header("NPCMove")][Space(5)]
     [SerializeField] private NavMeshAgent _navAgent;
+    [SerializeField] protected Animator _animator;
     [SerializeField, MinMaxRange(10f, 20f), Tooltip("ランダムウォーク目的地再セットの時間範囲")] private Vector2 _randomWalkIntervalRange;
     [SerializeField, Tooltip("動ける範囲を四角形とし、対角線の2点を指定する")] private Vector4 _radomWalkMoveRange;
     [SerializeField, Tooltip("目標地点到着とする距離")] private float _arrivalDistance;
@@ -21,6 +22,11 @@ public abstract class NPCMove : MonoBehaviour
     protected event Action OnArrivedTarget;
 
     public NPCMoveState NPCMoveState => _moveState;
+
+    protected virtual void Awake()
+    {
+        ChangeMoveState(NPCMoveState.RandomWalk);
+    }
 
     /// <summary> NPCの動き方を変更する </summary>
     /// <param name="targetPos"> SetTargetの場合、targetPosを指定する </param>
@@ -71,6 +77,9 @@ public abstract class NPCMove : MonoBehaviour
                 OnArrivedTarget?.Invoke();
             }
         }
+        
+        // animator param
+        _animator.SetFloat("Speed", _navAgent.speed);
     }
 
     private void OnDrawGizmos()

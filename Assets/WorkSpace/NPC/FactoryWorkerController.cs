@@ -10,11 +10,8 @@ public class FactoryWorkerController : NPCMove
     [Space(10)][Header("FactoryWorkerController")][Space(5)]
     [SerializeField, Tooltip("施設に到着とする最大距離")] private float _arrivalDistanceFacility;
     
-    private void Awake()
+    protected override void Awake()
     {
-        // DataManagerに工員として登録する
-        DataManager.Instance.FactoryWorkerController = this; // instanceがない場合がある 本来データの初期化時に生成されるべきである
-        
         // 初期はランダムウォークに設定する
         ChangeMoveState(NPCMoveState.RandomWalk);
         OnArrivedTarget += ArrivedFacility;
@@ -30,7 +27,8 @@ public class FactoryWorkerController : NPCMove
     /// <summary> 施設に到着した時の処理 </summary>
     void ArrivedFacility()
     {
-        // アニメーションぐらい？
+        // アニメーション
+        _animator.SetBool("IsUnderConstruction", true);
     }
 
     /// <summary> 施設建設が終わったとき </summary>
@@ -38,5 +36,6 @@ public class FactoryWorkerController : NPCMove
     {
         // ランダムウォークに戻る
         ChangeMoveState(NPCMoveState.RandomWalk);
+        _animator.SetBool("IsUnderConstruction", false);
     }
 }

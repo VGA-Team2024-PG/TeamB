@@ -17,4 +17,4 @@ MonoBehaviour:
   _price: 1000
   _facilityStock: 1
   _workTime: 300
-  _prefab: {fileID: 7172196803736618328, guid: 618145fa656c3ef438cadcfd2262c6de, type: 3}
+  _prefab: {fileID: 7172196803736618328, guid: bebc2687fb97b704591a3bda20db6efe, type: 3}

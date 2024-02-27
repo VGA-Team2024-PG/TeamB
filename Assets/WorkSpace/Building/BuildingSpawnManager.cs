@@ -58,7 +58,7 @@ public class BuildingSpawnManager : MonoBehaviour
     public void BuildStart(FacilityEnum facilityEnum)
     {
         //建築可能な工員がいるか確認
-        if(DataManager.Instance.FactoryWorker > 0)
+        if(DataManager.Instance.FactoryWorkerController.NPCMoveState == NPCMoveState.RandomWalk)
         {
             //生成する施設のデータを取得
             _buildingFacility = DataManager.Instance.GetFacilitydata((int)facilityEnum);
@@ -97,7 +97,7 @@ public class BuildingSpawnManager : MonoBehaviour
     /// </summary>
     public void FinishBuilding()
     {
-        if (_isBuilding && _isPlacable && DataManager.Instance.FactoryWorker > 0)
+        if (_isBuilding && _isPlacable && DataManager.Instance.FactoryWorkerController.NPCMoveState == NPCMoveState.RandomWalk)
         {
             _isBuilding = false;
             _buildingFacilityObj.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Facility");
@@ -106,14 +106,13 @@ public class BuildingSpawnManager : MonoBehaviour
             Destroy(_buildingFacilityObj.GetComponentInChildren<FacilityMover>());
             //ここで施工金額を現在のゴールドから減らす
             DataManager.Instance.ChangeGold(-_priceBuildingFacilityObj);
-            DataManager.Instance.ChangeFactoryWorker(-1);
             //施設の状態を推移するメソッドを呼ぶ
             _buildingFacilityObj.GetComponentInChildren<ConstructionState>().StartConstruction();
             _UIManager.ChangeUINormal();
         }
         else
         {
-            Debug.Log($"オブジェクトが重なっている、または工員が足りない {DataManager.Instance.FactoryWorker}");
+            Debug.Log("オブジェクトが重なっている、または工員が足りない");
         }
     }
     /// <summary>
