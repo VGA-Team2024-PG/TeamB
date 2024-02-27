@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4143923757523250351}
   - component: {fileID: 4958860165038236977}
   - component: {fileID: 3152297950568901444}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4274013016658086029}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GoldBars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 8214502644985691562}
   - component: {fileID: 1524379038117314517}
   - component: {fileID: 1246846599127568974}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7553137658763265680}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Parts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 2211799876856049882}
   - component: {fileID: 2470076155552716848}
   - component: {fileID: 1007896508731031675}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -420,6 +420,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gold-brick 1 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2627039988016356876, guid: a84106c7d92a746478ff48176d26911d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2627039988016453801, guid: a84106c7d92a746478ff48176d26911d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a84106c7d92a746478ff48176d26911d, type: 3}
@@ -482,6 +486,10 @@ PrefabInstance:
     - target: {fileID: 2627039988016356876, guid: a84106c7d92a746478ff48176d26911d, type: 3}
       propertyPath: m_Name
       value: gold-brick 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2627039988016356876, guid: a84106c7d92a746478ff48176d26911d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2627039988016453801, guid: a84106c7d92a746478ff48176d26911d, type: 3}
@@ -546,6 +554,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gold-brick 1 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2627039988016356876, guid: a84106c7d92a746478ff48176d26911d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2627039988016453801, guid: a84106c7d92a746478ff48176d26911d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a84106c7d92a746478ff48176d26911d, type: 3}
@@ -564,6 +576,10 @@ PrefabInstance:
     - target: {fileID: 4422308520603503593, guid: eb2104cc0b689a24795c8ccbf4735d14, type: 3}
       propertyPath: m_Name
       value: iron 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4422308520603503593, guid: eb2104cc0b689a24795c8ccbf4735d14, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4422308520603867081, guid: eb2104cc0b689a24795c8ccbf4735d14, type: 3}
       propertyPath: m_RootOrder
@@ -672,6 +688,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gold-brick 1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2627039988016356876, guid: a84106c7d92a746478ff48176d26911d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2627039988016453801, guid: a84106c7d92a746478ff48176d26911d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a84106c7d92a746478ff48176d26911d, type: 3}
@@ -690,6 +710,10 @@ PrefabInstance:
     - target: {fileID: 1575475122990086030, guid: c3c02eafc0cfabd4a9a04e1ac0e05859, type: 3}
       propertyPath: m_Name
       value: iron-ore 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575475122990086030, guid: c3c02eafc0cfabd4a9a04e1ac0e05859, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1575475122990377902, guid: c3c02eafc0cfabd4a9a04e1ac0e05859, type: 3}
       propertyPath: m_RootOrder
@@ -798,6 +822,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gold-brick 1 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 2627039988016356876, guid: a84106c7d92a746478ff48176d26911d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2627039988016453801, guid: a84106c7d92a746478ff48176d26911d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a84106c7d92a746478ff48176d26911d, type: 3}
@@ -861,6 +889,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gold-brick 1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2627039988016356876, guid: a84106c7d92a746478ff48176d26911d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2627039988016453801, guid: a84106c7d92a746478ff48176d26911d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a84106c7d92a746478ff48176d26911d, type: 3}
@@ -879,6 +911,10 @@ PrefabInstance:
     - target: {fileID: 1000011858052182, guid: 77a4266deede27b40b0faf2af46fba00, type: 3}
       propertyPath: m_Name
       value: mountain-desert 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011858052182, guid: 77a4266deede27b40b0faf2af46fba00, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4000014192746172, guid: 77a4266deede27b40b0faf2af46fba00, type: 3}
       propertyPath: m_RootOrder
