@@ -23,6 +23,7 @@ public class DataManager : MonoBehaviour
     private int[] _facilitycount = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
     private int[] _facilitystock = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
     private List<ConstructionState> _existFacilities = new List<ConstructionState>();
+    private DateTime _lastWarTime;
     public event Action<int> Onchangegold;
     public event Action<int> Onchangeresource;
     public event Action<int> Onchangeenemyresource;
@@ -107,6 +108,12 @@ public class DataManager : MonoBehaviour
     public int[] FacilityCount => _facilitycount;
     public int[] Facilitystock => _facilitystock;
 
+    public DateTime LastWarTime
+    {
+        get => _lastWarTime;
+        set => _lastWarTime = value;
+    }
+
     /// <summary> セーブデータからゲーム状態を初期化する </summary>
     void InitializeGameData(SaveGameData saveGameData)
     {
@@ -115,6 +122,7 @@ public class DataManager : MonoBehaviour
         EnemyResource = saveGameData._enemyResource;
         _facilitycount = saveGameData._facilityCount;
         _facilitystock = saveGameData._facilityStock;
+        LastWarTime = DateTime.Parse(saveGameData._lastWarTime);
 
         foreach (FacilitySaveData facilitySaveData in saveGameData._facilitySaveDatas)
         {
@@ -135,7 +143,7 @@ public class DataManager : MonoBehaviour
         }
         
         SaveGameData saveGameData = new SaveGameData(_gold, _resource, _enemyresource
-            , _facilitycount, _facilitystock, facilitySaveDatas);
+            , _facilitycount, _facilitystock, LastWarTime.ToString(), facilitySaveDatas);
         _saveLoadManager.SaveData(saveGameData);
         
         Invoke(nameof(SaveGameData), 60);
