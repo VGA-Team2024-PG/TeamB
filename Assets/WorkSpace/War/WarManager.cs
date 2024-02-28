@@ -13,6 +13,7 @@ public class WarManager : MonoBehaviour
     [SerializeField] private TMP_Text _resourceText;
     [SerializeField] private TMP_Text _enemyResourceText;
     [SerializeField] private GameObject _closeButton;
+    [Space(5)] [SerializeField] private GameObject _soldierPrefab;
     
     static WarManager _instance;
     public static WarManager Instance { get => _instance; }
@@ -40,6 +41,13 @@ public class WarManager : MonoBehaviour
 
         TimeSpan span = DateTime.Now - DataManager.Instance.LastWarTime;
         Invoke(nameof(StartWar), 21600f - Mathf.Clamp((float)span.TotalSeconds, 0, 21600f));
+
+        for (int i = 0; i < DataManager.Instance.Resource; i++)
+        {
+            GameObject soldier;
+            Soldiers.Enqueue(soldier = Instantiate(_soldierPrefab));
+            soldier.GetComponent<NPCMove>().RandomSpawn();
+        }
     }
 
     public void StartWar()
