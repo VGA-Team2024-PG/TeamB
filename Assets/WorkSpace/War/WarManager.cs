@@ -37,6 +37,9 @@ public class WarManager : MonoBehaviour
         OnDefeat += Defeat;
         
         _warPanel.SetActive(false);
+
+        TimeSpan span = DateTime.Now - DataManager.Instance.LastWarTime;
+        Invoke(nameof(StartWar), 21600f - Mathf.Clamp((float)span.TotalSeconds, 0, 21600f));
     }
 
     public void StartWar()
@@ -49,6 +52,9 @@ public class WarManager : MonoBehaviour
         {
             OnDefeat?.Invoke();
         }
+
+        DataManager.Instance.LastWarTime = DateTime.Now;
+        Invoke(nameof(StartWar), 21600f);
     }
 
     public void Win()

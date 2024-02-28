@@ -22,6 +22,7 @@ public class SaveLoadManager : MonoBehaviour
             _initialData._facilityCount = new int[Enum.GetValues(typeof(FacilityEnum)).Length];
             // 施設データから初期のストックを取得する
             _initialData._facilityStock = DataManager.Instance.Facilitystock;
+            _initialData._lastWarTime = DateTime.Now.ToString();
 
             // 現存する施設だけストックを減らす
             foreach (FacilitySaveData dataFacilitySaveData in _initialData._facilitySaveDatas)
@@ -70,15 +71,17 @@ public class SaveGameData
     public int _enemyResource;
     public int[] _facilityCount;
     public int[] _facilityStock;
+    public string _lastWarTime;
     public FacilitySaveData[] _facilitySaveDatas;
 
-    public SaveGameData(int gold, int resource, int enemyResource, int[] facilityCount, int[] facilityStock, FacilitySaveData[] facilitySaveDatas)
+    public SaveGameData(int gold, int resource, int enemyResource, int[] facilityCount, int[] facilityStock, string lastWarTime, FacilitySaveData[] facilitySaveDatas)
     {
         _gold = gold;
         _resource = resource;
         _enemyResource = enemyResource;
         _facilityCount = facilityCount;
         _facilityStock = facilityStock;
+        _lastWarTime = lastWarTime;
         _facilitySaveDatas = facilitySaveDatas;
     }
 }
