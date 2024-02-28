@@ -64,6 +64,14 @@ public class NPCMove : MonoBehaviour
         _targetPos = targetPos;
     }
 
+    public void RandomSpawn()
+    {
+        Vector3 randomPos = new Vector3(Random.Range(_radomWalkMoveRange.x, _radomWalkMoveRange.z), 0,
+            Random.Range(_radomWalkMoveRange.y, _radomWalkMoveRange.w));
+        NavMesh.SamplePosition(randomPos, out NavMeshHit navMeshHit, 5, 1);
+        transform.position = navMeshHit.position;
+    }
+
     private void Update()
     {
         // SetTarget時のTargetへの到着判定を行う

@@ -29,6 +29,7 @@ public class SoldierTrainingSchoolFunction : MonoBehaviour, IPointerClickHandler
     {
         _constructionState = GetComponent<ConstructionState>();
         DataManager.Instance.OnChangedFacilityCount += LimitUpdate;
+        LimitUpdate(DataManager.Instance.FacilityCount);
     }
 
     void LimitUpdate(int[] countList)
