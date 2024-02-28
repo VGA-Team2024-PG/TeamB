@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TrainingGround
   m_EditorClassIdentifier: 
   _facilityEnum: 1
-  _name: TrainingGround
+  _name: "\u5175\u58EB\u80B2\u6210\u6240"
   _price: 1000
   _facilityStock: 1
   _workTime: 300

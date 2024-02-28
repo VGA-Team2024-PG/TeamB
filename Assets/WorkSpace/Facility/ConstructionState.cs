@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ConstructionState : MonoBehaviour
 {
     [SerializeField, Tooltip("施設の種類")] FacilityEnum _facilityEnum;
-    [SerializeField, Tooltip("建築経過時間のゲージImage")] private Image _buildingGaugeImage; 
+    [SerializeField, Tooltip("建築経過時間のゲージ")] private Slider _buildingTimeSlider; 
     
     /// <summary> 現在の建設状態 </summary>
     FacilityState _currentState = FacilityState.NotInstalled;
@@ -31,6 +31,11 @@ public class ConstructionState : MonoBehaviour
         if (_currentState == FacilityState.Constructing)
         {
             DataManager.Instance.FactoryWorkerController.SetWork(transform.position);
+            _buildingTimeSlider.gameObject.SetActive(true);
+        }
+        else
+        {
+            _buildingTimeSlider.gameObject.SetActive(false);
         }
     }
 
@@ -39,12 +44,12 @@ public class ConstructionState : MonoBehaviour
         if (_currentState == FacilityState.Constructing)
         {
             _elapsedTime += Time.deltaTime;
-            _buildingGaugeImage.fillAmount = _elapsedTime / _facilityType.WorkTime;
+            _buildingTimeSlider.value = _elapsedTime / _facilityType.WorkTime;
             
             if (_elapsedTime >= _facilityType.WorkTime)
             {
                 _currentState = FacilityState.Working;
-                _buildingGaugeImage.enabled = false;
+                _buildingTimeSlider.gameObject.SetActive(false);
                 DataManager.Instance.FactoryWorkerController.FinishBuildingFacility();
                 DataManager.Instance.AddFacilityCount(_facilityEnum);
             }
@@ -59,6 +64,7 @@ public class ConstructionState : MonoBehaviour
     {
         _currentState = FacilityState.Constructing;
         DataManager.Instance.FactoryWorkerController.SetWork(transform.position);
+        _buildingTimeSlider.gameObject.SetActive(true);
     }
 
     /// <summary>

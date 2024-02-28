@@ -71,7 +71,7 @@ MonoBehaviour:
   _navAgent: {fileID: 7107767574367481929}
   _animator: {fileID: 3535962776207808554}
   _randomWalkIntervalRange: {x: 10, y: 20}
-  _radomWalkMoveRange: {x: 20, y: 31.5, z: -20, w: -8.5}
+  _radomWalkMoveRange: {x: 24, y: 14, z: -24, w: -15}
   _arrivalDistance: 0.5
   _arrivalDistanceFacility: 3
 --- !u!1001 &6005915020770349069

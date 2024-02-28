@@ -79,7 +79,7 @@ public class NPCMove : MonoBehaviour
         }
         
         // animator param
-        _animator.SetFloat("Speed", _navAgent.speed);
+        _animator.SetFloat("Speed", _navAgent.velocity.magnitude);
     }
 
     private void OnDrawGizmos()
