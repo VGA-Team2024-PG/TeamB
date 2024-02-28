@@ -20,10 +20,11 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
     /// </summary>
     [SerializeField] float _storageLimit = 1000f;
     DataManager _dataManager;
+    WarManager _warManager;
     ConstructionState _constructionState;
     float _elapsedTime = 0;
     int _currentGold = 0;
-    private event Action<int> OnChangedGold; 
+    private event Action<int> OnChangedGold;
 
     public int CurrentGold
     {
@@ -38,6 +39,8 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
     void Start()
     {
         _dataManager = DataManager.Instance;
+        _warManager = WarManager.Instance;
+        _warManager.OnDefeat += LoseGold;
         _constructionState = GetComponent<ConstructionState>();
     }
 
@@ -68,6 +71,11 @@ public class MineFunction : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         _dataManager.ChangeGold(_currentGold);
+        CurrentGold = 0;
+    }
+
+    public void LoseGold()
+    {
         CurrentGold = 0;
     }
 }
