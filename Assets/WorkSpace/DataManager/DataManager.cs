@@ -27,6 +27,7 @@ public class DataManager : MonoBehaviour
     public event Action<int> Onchangeresource;
     public event Action<int> Onchangeenemyresource;
     public event Action<int> Onchangefactoryworker;
+    public event Action<int[]> OnChangedFacilityCount;
 
     private void Awake()
     {
@@ -42,12 +43,14 @@ public class DataManager : MonoBehaviour
 
         Onchangegold += n => _goldText.text = n.ToString();
         //Onchangeresource += n => _resourceText.text = n.ToString();
-        //Onchangeenemyresource += n => _enemyresourceText.text = n.ToString();
+        Onchangeenemyresource += n => _enemyresourceText.text = n.ToString();
         //Onchangefactoryworker += n => _factoryworkerText.text = n.ToString();
 
         InisializeFacilityStock();
         // ゲームデータをロードし、初期化する
         InitializeGameData(_saveLoadManager.GetInitialData());
+        
+        Invoke(nameof(SaveGameData), 60);
     }
 
     private void InisializeFacilityStock()
@@ -134,6 +137,8 @@ public class DataManager : MonoBehaviour
         SaveGameData saveGameData = new SaveGameData(_gold, _resource, _enemyresource
             , _facilitycount, _facilitystock, facilitySaveDatas);
         _saveLoadManager.SaveData(saveGameData);
+        
+        Invoke(nameof(SaveGameData), 60);
     }
 
     public void ChangeGold(int value)
@@ -153,7 +158,8 @@ public class DataManager : MonoBehaviour
 
     public void AddFacilityCount(FacilityEnum facilityEnum)
     {
-        _facilitycount[(int)facilityEnum]++;
+        FacilityCount[(int)facilityEnum]++;
+        OnChangedFacilityCount.Invoke(_facilitycount);
     }
 
     /// <summary>
